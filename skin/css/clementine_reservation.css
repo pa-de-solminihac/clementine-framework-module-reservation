@@ -1,0 +1,157 @@
+.clementine_crud-blockedbutton {
+	position: fixed !important;
+	bottom: 45px;
+	z-index: 9;
+}
+
+.clementine_crud-update-blocked {
+	right: 90px;
+	background-color: #996633 !important;
+}
+
+#number_people {
+	margin-top: 10px;
+	margin-bottom: 20px;
+    float: right;
+    width: 150px;
+    margin-left: 7px;
+}
+
+.body-newframe {
+	height: 100%;
+}
+
+.modal-backdrop {
+	display: none;
+}
+#videoModal {
+	overflow: hidden;
+}	
+
+.is-an-iframe btn {
+	top: -5px;
+}
+
+.repeat {
+	margin-top: 10px;
+}
+
+hr {
+	border: 0;
+    height: 0.5px;
+    background: #d2d2d2;
+}
+
+.week_radio {
+	margin-left: 10px !important;
+}
+
+input[name=select_week7] {
+	margin-right: 25px;
+}
+
+.titre_page {
+    color: #FE642E;
+    font-size: 25px;
+    text-align: center;
+}
+
+.fc-content {
+    height: 25px; !important
+}
+
+.dispo .fc-content, .full .fc-content, .list .fc-content {
+    color: white; 
+}
+
+.fc-time {
+    padding-left: 10px !important;
+}
+
+.fc-time, .fc-title {
+    margin-top: 3px;
+}
+
+.legende .fc-time, .legende .fc-title {
+    font-size: 12px !important;
+}
+.occupe {
+    color: #000  !important;
+}
+
+#affichage_calendar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.legende {
+    font-size: 15px;
+    display: inline-block !important;
+    width: 170px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+#title_all {
+    margin-bottom: -40px;
+}
+
+#menu_calendar {
+    margin-bottom: 5px;
+} 
+
+#calendar {
+    height: 100% !important;
+    margin-top: 0;
+}
+
+#number_people_unco {
+    margin-top: 10px;
+	margin-bottom: 20px;
+    float: right;
+    width: 150px;
+    margin-left: 7px;
+}
+
+@media screen and (max-width: 1200px) {
+    .legende {
+        width: 130px;
+    }
+}
+
+@media screen and (max-width: 1040px) {
+    .legende {
+        width: 100px;
+    }
+    #number_people {
+        position: absolute;
+        top: 40px;
+    }
+} 
+
+@media screen and (max-width: 500px) {
+    .legende .fc-time {
+        display: none !important;
+    }
+    .legende .fc-title {
+        top: 0 !important;
+    }
+    .legende {
+        height: 20px !important;
+        width: 60px; 
+    }
+    #number_people_unco {
+        position: absolute;
+        top: 60px;
+    }
+    .titre_page {
+        margin-left: 0 !important;
+    }
+} 
+
+@media screen and (max-width: 440px) {
+    .fc-center {
+        top: 10px;
+        width: 100%;
+    }
+}
