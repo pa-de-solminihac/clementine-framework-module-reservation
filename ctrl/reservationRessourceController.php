@@ -10,7 +10,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
      */
     public function createAction($request, $params = null)
     {
-        if ($request->POST) {
+        if ($request->POST && !empty($request->POST['clementine_reservation_ressource-id'])) {
             $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->POST['clementine_reservation_ressource-id'];
         }
         $reservation_ctrl = $this->getController('reservation');

@@ -243,7 +243,6 @@ SQL;
        OR (("$start_date" >= start_date AND "$start_date" <= end_date) OR ("$end_date" >= start_date AND "$end_date" <= end_date)))
     LIMIT 1
 SQL;
-        clementine::log($sql, 'yellow');
         $stmt = $db->query($sql);
         $fetch_all = $db->fetch_all($stmt, MYSQLI_ASSOC);
         if (isset($fetch_all[0]["id"])) {

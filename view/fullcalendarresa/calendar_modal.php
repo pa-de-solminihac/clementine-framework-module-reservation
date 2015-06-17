@@ -30,8 +30,11 @@ echo json_encode($id); ?>;
                     if (current.search("reservation/update")) {
                         update = 1;
                     }
+                    console.log(current);
+                    console.log(update);
                     var url =  $(this).attr("src");
-                    if (current != url && current.indexOf("reservation\?") == -1 && current.search("choix") == -1 && current.search("block") == -1 && current.search("delete") == -1 && update == 0) {
+                    if (current != url && current.search("choix") == -1 && current.search("block") == -1 && current.search("delete") == -1 && update == 0) {
+                        console.log("kek");
                         $(".close").trigger("click");
                         if (id_ressource != -1) {
                             $("#calendar"+id_ressource).fullCalendar("refetchEvents");

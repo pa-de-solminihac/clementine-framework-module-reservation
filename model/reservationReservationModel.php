@@ -144,7 +144,7 @@ SQL;
         while ($res = $db->fetch_assoc($stmt)) {
             list($start_date_reservation, $start_hour_reservation) = explode(' ', $res['start_date']);
             list($end_date_reservation, $end_hour_reservation) = explode(' ', $res['end_date']);
-            $tab_url_reservation[$res['start_date'] . '-' . $res['end_date']] = __WWW__ . '/reservation/update?reservation-id_reservation=' . $res['id'] . '&start_date=' . $start_date_reservation . '_' . $start_hour_reservation . '&clementine_reservation_ressource-id=' . $res['ressource_id'];
+            $tab_url_reservation[$res['start_date'] . '-' . $res['end_date']] = __WWW__ . '/reservation/update?clementine_reservation-id=' . $res['id'] . '&start_date=' . $start_date_reservation . '_' . $start_hour_reservation . '&clementine_reservation_ressource-id=' . $res['ressource_id'];
         }
         return $tab_url_reservation;
     }

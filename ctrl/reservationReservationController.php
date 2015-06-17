@@ -768,6 +768,16 @@ class reservationReservationController extends reservationReservationController_
         $tab = $fullcalendar_mdl->getListCreneauxSansResa($this->data['id_ressource_create'], $horr, $day, $next_day);
         $result = $request->POST['creneaux'];
         $tab_hor = $fullcalendar_ctrl->getListCreneauxParJour($day, $horr);
+        $tab_hor = array_values(array_filter($tab_hor));
+        $incr = 0;
+        foreach ($tab_hor as $tab_total) {
+            if (strpos($tab_total, '-') == false) {
+                $tab_hor[$incr] = '';
+            }
+            ++$incr;
+        }
+        sort($tab_hor, SORT_REGULAR);
+        $tab_hor = array_values(array_filter($tab_hor));
         $user = $this->getModel('users');
         $privileges = array(
             'clementine_reservation_gerer_reservation' => true
