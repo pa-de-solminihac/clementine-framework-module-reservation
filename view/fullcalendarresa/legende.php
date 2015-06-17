@@ -16,7 +16,7 @@ if ($lang == 'fr') {
 }
 $user = $this->getModel('users');
 $privileges = array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 );
 $admin = $user->hasPrivilege($privileges);
 ?>

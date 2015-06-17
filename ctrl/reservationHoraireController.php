@@ -205,7 +205,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
         }
         $reservation_ctrl = $this->getController('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $reservation_ctrl->tryAccess($privileges);
         return parent::createAction($request, $params);
@@ -222,7 +222,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
         $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
         $reservation_ctrl = $this->getController('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $reservation_ctrl->tryAccess($privileges);
         return parent::updateAction($request, $params);
@@ -239,7 +239,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
         $params['url_retour'] = __WWW__ . '/reservation/calendar';
         $reservation_ctrl = $this->getController('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         if (isset($request->GET['is_modif']) && $request->GET['is_modif'] == 1) {
             $params['where'] = " clementine_reservation_ressource.id = " . $request->GET['clementine_reservation_ressource-id'];

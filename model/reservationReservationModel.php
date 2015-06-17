@@ -28,7 +28,7 @@ class reservationReservationModel extends reservationReservationModel_Parent
         $user_mdl = $this->getModel('users');
         $auth = $user_mdl->getAuth();
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         if ($auth != false && (!$user_mdl->hasPrivilege($privileges))) {
             if ($this->testUser($auth['id'])) {

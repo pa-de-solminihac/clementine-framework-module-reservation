@@ -60,7 +60,7 @@ SQL;
         $fullcalendar_helper = $this->getHelper('fullcalendarresa');
         $user = $this->getModel('users');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $admin = $user->hasPrivilege($privileges);
         while ($res = $db->fetch_assoc($stmt)) {

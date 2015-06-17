@@ -64,7 +64,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
             'gerer_reservation' => true
         );
         $privileges_client = array(
-            'regarder_reservation' => true
+            'clementine_reservation_regarder_reservation' => true
         );
         $admin = $user->hasPrivilege($privileges);
         $client = $user->hasPrivilege($privileges_client);

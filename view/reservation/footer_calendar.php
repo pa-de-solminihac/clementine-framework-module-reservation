@@ -2,7 +2,7 @@
 $users = $this->getModel('users');
 $lang = clementine::$config['module_fullcalendar']['lang'];
 $privileges = array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 );
 $admin = $users->hasPrivilege($privileges);
 if ($lang == 'fr') {

@@ -7,7 +7,7 @@ if ($data['id_ressource'] != 0) {
         $this->getBlock('reservation/header', $data, $request);
         $ressource_mdl = $this->getModel('ressource');
         if (!$ressource_mdl->ressourceHasHoraire($data['id_ressource']) && $users->hasPrivilege(array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         ))) {
             if ($lang == "fr") {
 ?>
@@ -35,7 +35,7 @@ if ($data['id_ressource'] != 0) {
         $this->getBlock('fullcalendarresa/interfaceUtil', $data, $request);
     }
 } else if ($users->hasPrivilege(array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 ))) {
     $this->getBlock('reservation/header', $data, $request);
     if ($lang == 'fr') {

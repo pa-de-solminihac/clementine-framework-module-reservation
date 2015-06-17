@@ -3,7 +3,7 @@ $this->getBlock('fullcalendarresa/calendar_modal');
 $user_mdl = $this->getModel('users');
 $ressource_mdl = $this->getModel('ressource');
 $privileges = array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 );
 $co = true;
 if (!$user_mdl->hasPrivilege($privileges)) {

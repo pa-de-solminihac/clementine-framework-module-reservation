@@ -27,7 +27,7 @@ if (clementine::$config['module_fullcalendar']['lang'] == 'en') {
         $ressource_title,
     );
 }
-if ($users->hasPrivilege('gerer_reservation')) {
+if ($users->hasPrivilege('clementine_reservation_gerer_reservation')) {
     $sidebar['Reservations'] = array(
         'url' => '#',
         'icon' => '<i class="glyphicon glyphicon-calendar"></i>',

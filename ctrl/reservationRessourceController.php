@@ -15,7 +15,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         }
         $reservation_ctrl = $this->getController('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $reservation_ctrl->tryAccess($privileges);
         return parent::createAction($request, $params);
@@ -31,7 +31,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
         $reservation_ctrl = $this->getController('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $reservation_ctrl->tryAccess($privileges);
         return parent::updateAction($request, $params);
@@ -47,7 +47,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $params['url_retour'] = __WWW__ . '/reservation/calendar';
         $reservation_ctrl = $this->getController('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $reservation_ctrl->tryAccess($privileges);
         return parent::indexAction($request, $params);

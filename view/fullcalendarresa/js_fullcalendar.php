@@ -8,7 +8,7 @@ $nbPlaceMax = $ressource_mdl->getMaximumNumberPlace($data['id_ressource']);
 $helper = $this->getHelper('fullcalendarresa');
 $module_name = $this->getCurrentModule();
 $privileges = array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 );
 $co = true;
 $horraire_except_util = array();

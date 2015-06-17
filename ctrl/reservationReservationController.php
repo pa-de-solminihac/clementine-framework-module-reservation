@@ -338,7 +338,7 @@ class reservationReservationController extends reservationReservationController_
             $params['where'].= ' AND clementine_reservation.start_date = "' . $request->GET['start_date'] . '" AND clementine_reservation.end_date="' . $request->GET['end_date'] . '"';
         }
         $privileges = array(
-            'list_reservation' => true
+            'clementine_reservation_list_reservation' => true
         );
         $this->tryAccess($privileges);
         return parent::indexAction($request, $params);
@@ -556,7 +556,7 @@ class reservationReservationController extends reservationReservationController_
         $total = $fullcalendar_ctrl->getListCreneauxParJour($day, $fullcalendar_mdl->getListCreneauxPossible($this->data['id_ressource_create'], $day, $next_day, $fullcalendar_mdl->getTotalHorraireResa($this->data['id_ressource_create'], false, false, $day, $next_day)));
         $user = $this->getModel('users');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $admin = $user->hasPrivilege($privileges);
         if ($admin) {
@@ -704,7 +704,7 @@ class reservationReservationController extends reservationReservationController_
         $auth = $user->getAuth();
         $creation = $this->getModel('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $admin = $user->hasPrivilege($privileges);
         if ($auth != false && !$admin) {
@@ -770,7 +770,7 @@ class reservationReservationController extends reservationReservationController_
         $tab_hor = $fullcalendar_ctrl->getListCreneauxParJour($day, $horr);
         $user = $this->getModel('users');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $ressource_mdl = $this->getModel('ressource');
         $creneaux = $ressource_mdl->getCreneaux($this->data['id_ressource_create']);
@@ -788,7 +788,7 @@ class reservationReservationController extends reservationReservationController_
         $auth = $user->getAuth();
         $creation = $this->getModel('reservation');
         $privileges = array(
-            'gerer_reservation' => true
+            'clementine_reservation_gerer_reservation' => true
         );
         $admin = $user->hasPrivilege($privileges);
         if ($auth != false && !$admin) {

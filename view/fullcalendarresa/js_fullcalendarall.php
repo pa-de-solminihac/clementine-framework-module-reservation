@@ -8,7 +8,7 @@ if (!empty(clementine::$config['module_fullcalendar']['ressource'])) {
 $creneaux = '00:30:00';
 $user_mdl = $this->getModel('users');
 $privileges = array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 );
 $co = true;
 if (!$user_mdl->hasPrivilege($privileges)) {

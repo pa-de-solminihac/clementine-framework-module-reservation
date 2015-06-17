@@ -1,7 +1,7 @@
 <?php
 $user = $this->getModel('users');
 $privileges = array(
-    'gerer_reservation' => true
+    'clementine_reservation_gerer_reservation' => true
 );
 if (!empty($request->GET['clementine_reservation_ressource-id']) || !empty($request->GET['id_ressource'])) {
     $this->getParentBlock($data, $request);
