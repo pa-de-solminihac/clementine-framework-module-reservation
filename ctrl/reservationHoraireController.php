@@ -21,15 +21,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
         $date_horaire = $horaire_mdl->getDateById($id_horaire);
         $date_reserv = $reservation_mdl->getIdAndDateById($id_ressource);
         if ($this->getReservationHasHoraire($date_horaire, $date_reserv)) {
-            $ns->redirect(__WWW__ . '/horaire/update?clementine_reservation_ressource-id='
-                . $request->get('int', 'clementine_reservation_ressource-id')
-                . '&clementine_reservation_ressource_has_horaire-ressource_id='
-                . $request->get('int', 'clementine_reservation_ressource_has_horaire-ressource_id')
-                . '&clementine_reservation_ressource_has_horaire-horaire_id='
-                . $request->get('int', 'clementine_reservation_ressource_has_horaire-horaire_id')
-                . '&clementine_reservation_horaire-id='
-                . $request->get('int', 'clementine_reservation_horaire-id')
-                . '&has_horaire=1');
+            $ns->redirect(__WWW__ . '/horaire/update?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id') . '&clementine_reservation_ressource_has_horaire-ressource_id=' . $request->get('int', 'clementine_reservation_ressource_has_horaire-ressource_id') . '&clementine_reservation_ressource_has_horaire-horaire_id=' . $request->get('int', 'clementine_reservation_ressource_has_horaire-horaire_id') . '&clementine_reservation_horaire-id=' . $request->get('int', 'clementine_reservation_horaire-id') . '&has_horaire=1');
         } else {
             $sql = "DELETE FROM clementine_reservation_ressource_has_horaire WHERE horaire_id = $id_horaire";
             $db->query($sql);
@@ -514,43 +506,44 @@ SQL;
                             $maximum_number_place = $res3['maximum_number_place'];
                             $maximum_number_place_by_reservation = $res3['maximum_number_place_by_reservation'];
 
-                        if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
-                            $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
-                            $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
                             if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
                                 $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
                                 $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
-                            }
-                            if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place'])) {
-                                $maximum_number_place = $insecure_values['clementine_reservation_horaire-maximum_number_place'];
-                            }
-                            if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'])) {
-                                $maximum_number_place_by_reservation = $insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'];
-                            }
-                            $sec_start = strtotime($res['start_date']);
-                            $sec_end = strtotime($res['end_date']);
-                            $diff_datedeb_datefin = $sec_end - $sec_start;
+                                if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
+                                    $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
+                                    $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
+                                }
+                                if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place'])) {
+                                    $maximum_number_place = $insecure_values['clementine_reservation_horaire-maximum_number_place'];
+                                }
+                                if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'])) {
+                                    $maximum_number_place_by_reservation = $insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'];
+                                }
+                                $sec_start = strtotime($res['start_date']);
+                                $sec_end = strtotime($res['end_date']);
+                                $diff_datedeb_datefin = $sec_end - $sec_start;
 
-                            $horaire_tab_crea = $fullcalendar_mdl->repeat_all_month($res, $res2, $start_date_load, $end_date_load, $diff_datedeb_datefin, $request, $times_creneaux, $horaire_tab_crea, true, false, $maximum_number_place, $maximum_number_place_by_reservation);
+                                $horaire_tab_crea = $fullcalendar_mdl->repeat_all_month($res, $res2, $start_date_load, $end_date_load, $diff_datedeb_datefin, $request, $times_creneaux, $horaire_tab_crea, true, false, $maximum_number_place, $maximum_number_place_by_reservation);
 
-                            foreach ($horaire_tab_crea as $tab_crea) {
-                                array_push($tab_horaire_crea_deb, $tab_crea->start);
-                                array_push($tab_horaire_crea_fin, $tab_crea->end);
+                                foreach ($horaire_tab_crea as $tab_crea) {
+                                    array_push($tab_horaire_crea_deb, $tab_crea->start);
+                                    array_push($tab_horaire_crea_fin, $tab_crea->end);
+                                }
+
+                                $horraire_tab_actu = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $start_date_load, $end_date_load);
+
+                                foreach ($horraire_tab_actu as $tab_actu) {
+                                    array_push($tab_horaire_actu_deb, $tab_actu->start);
+                                    array_push($tab_horaire_actu_fin, $tab_actu->end);
+                                }
+                                $ind = 0;
+                                $existe = 0;
+
+                                $val_mois = $_POST['select_mois' . $i];
+                                $sql = "INSERT INTO `clementine_reservation_horaire_has_option` (`repeat_all`,`month`,`week`,`till`,`id_horaire`,`repeat`) VALUES ('mois','" . $val_mois . "','null','" . $val_till . "','" . $max_id . "','null') ";
+                                $db->query($sql);
+                                $continue = true;
                             }
-
-                            $horraire_tab_actu = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $start_date_load, $end_date_load);
-
-                            foreach ($horraire_tab_actu as $tab_actu) {
-                                array_push($tab_horaire_actu_deb, $tab_actu->start);
-                                array_push($tab_horaire_actu_fin, $tab_actu->end);
-                            }
-                            $ind = 0;
-                            $existe = 0;
-
-                            $val_mois = $_POST['select_mois' . $i];
-                            $sql = "INSERT INTO `clementine_reservation_horaire_has_option` (`repeat_all`,`month`,`week`,`till`,`id_horaire`,`repeat`) VALUES ('mois','" . $val_mois . "','null','" . $val_till . "','" . $max_id . "','null') ";
-                            $db->query($sql);
-                            $continue = true;
                         }
                     }
                 }
@@ -576,74 +569,9 @@ SQL;
                             $id_ressource = $_GET['clementine_reservation_ressource-id'];
 
                             $sql = <<<SQL
-                        SELECT time_creneaux, maximum_number_place, maximum_number_place_by_reservation
-                        FROM clementine_reservation_ressource
-                        WHERE id = $id_ressource
-SQL;
-                            $stmt = $db->query($sql);
-                            $res3 = $db->fetch_assoc($stmt);
-                            $times_creneaux = $res3['time_creneaux'];
-                            $maximum_number_place = $res3['maximum_number_place'];
-                            $maximum_number_place_by_reservation = $res3['maximum_number_place_by_reservation'];
-
-                        $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
-                        if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
-                            $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
-                            $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
-                            if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
-                                $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
-                                $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
-                            }
-                            if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place'])) {
-                                $maximum_number_place = $insecure_values['clementine_reservation_horaire-maximum_number_place'];
-                            }
-                            if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'])) {
-                                $maximum_number_place_by_reservation = $insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'];
-                            }
-                            $sec_start = strtotime($res['start_date']);
-                            $sec_end = strtotime($res['end_date']);
-                            $diff_datedeb_datefin = $sec_end - $sec_start;
-
-                            $horaire_tab_crea = $fullcalendar_mdl->repeat_all_day($start_date_load, $end_date_load, $res2, $request, $times_creneaux, $horaire_tab_crea, true, false, $maximum_number_place, $maximum_number_place_by_reservation, $res, $diff_datedeb_datefin);
-
-                            foreach ($horaire_tab_crea as $tab_crea) {
-                                array_push($tab_horaire_crea_deb, $tab_crea->start);
-                                array_push($tab_horaire_crea_fin, $tab_crea->end);
-                            }
-
-                            $horraire_tab_actu = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $start_date_load, $end_date_load);
-
-                            foreach ($horraire_tab_actu as $tab_actu) {
-                                array_push($tab_horaire_actu_deb, $tab_actu->start);
-                                array_push($tab_horaire_actu_fin, $tab_actu->end);
-                            }
-                            $ind = 0;
-                            $existe = 0;
-
-                            $sql = "INSERT INTO `clementine_reservation_horaire_has_option` (`repeat_all`,`month`,`week`,`till`,`id_horaire`,`repeat`) VALUES ('jour','null','null','" . $val_till . "','" . $max_id . "','null') ";
-                            $db->query($sql);
-                            $continue = true;
-                        } else {
-                            $res = array();
-                            $res2 = array();
-                            $res2['till'] = $val_till;
-                            $res2['repeat_all'] = $val;
-                            $res['start_date'] = $insecure_values['clementine_reservation_horaire-start_date'];
-                            $res['start_hour'] = $insecure_values['clementine_reservation_horaire-start_hour'] . ':00';
-                            $res['end_date'] = $insecure_values['clementine_reservation_horaire-end_date'];
-                            $res['end_hour'] = $insecure_values['clementine_reservation_horaire-end_hour'] . ':00';
-                            $res['comment'] = $insecure_values['clementine_reservation_horaire-comment'];
-                            $res['to_add'] = $insecure_values['clementine_reservation_horaire-to_add'];
-                            $res['id'] = $max_id;
-                            $start_date_load = $insecure_values['clementine_reservation_horaire-start_date'];
-                            $end_date_load = $val_till;
-                            $request = $this->getRequest();
-                            $id_ressource = $_GET['clementine_reservation_ressource-id'];
-
-                            $sql = <<<SQL
-                        SELECT time_creneaux, maximum_number_place, maximum_number_place_by_reservation
-                        FROM clementine_reservation_ressource
-                        WHERE id = $id_ressource
+                    SELECT time_creneaux, maximum_number_place, maximum_number_place_by_reservation
+                    FROM clementine_reservation_ressource
+                    WHERE id = $id_ressource
 SQL;
                             $stmt = $db->query($sql);
                             $res3 = $db->fetch_assoc($stmt);
@@ -655,28 +583,100 @@ SQL;
                             if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
                                 $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
                                 $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
-                            }
-                            if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place'])) {
-                                $maximum_number_place = $insecure_values['clementine_reservation_horaire-maximum_number_place'];
-                            }
-                            if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'])) {
-                                $maximum_number_place_by_reservation = $insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'];
-                            }
-                            $sec_start = strtotime($res['start_date']);
-                            $sec_end = strtotime($res['end_date']);
-                            $diff_datedeb_datefin = $sec_end - $sec_start;
-                            $horaire_tab_crea = $fullcalendar_mdl->repeat_all_spec_day($res, $res2, $start_date_load, $end_date_load, $diff_datedeb_datefin, $request, $times_creneaux, $horaire_tab_crea, true, false, $maximum_number_place, $maximum_number_place_by_reservation);
+                                if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
+                                    $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
+                                    $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
+                                }
+                                if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place'])) {
+                                    $maximum_number_place = $insecure_values['clementine_reservation_horaire-maximum_number_place'];
+                                }
+                                if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'])) {
+                                    $maximum_number_place_by_reservation = $insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'];
+                                }
+                                $sec_start = strtotime($res['start_date']);
+                                $sec_end = strtotime($res['end_date']);
+                                $diff_datedeb_datefin = $sec_end - $sec_start;
 
-                            foreach ($horaire_tab_crea as $tab_crea) {
-                                array_push($tab_horaire_crea_deb, $tab_crea->start);
-                                array_push($tab_horaire_crea_fin, $tab_crea->end);
-                            }
+                                $horaire_tab_crea = $fullcalendar_mdl->repeat_all_day($start_date_load, $end_date_load, $res2, $request, $times_creneaux, $horaire_tab_crea, true, false, $maximum_number_place, $maximum_number_place_by_reservation, $res, $diff_datedeb_datefin);
 
-                            $horraire_tab_actu = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $start_date_load, $end_date_load);
+                                foreach ($horaire_tab_crea as $tab_crea) {
+                                    array_push($tab_horaire_crea_deb, $tab_crea->start);
+                                    array_push($tab_horaire_crea_fin, $tab_crea->end);
+                                }
 
-                            foreach ($horraire_tab_actu as $tab_actu) {
-                                array_push($tab_horaire_actu_deb, $tab_actu->start);
-                                array_push($tab_horaire_actu_fin, $tab_actu->end);
+                                $horraire_tab_actu = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $start_date_load, $end_date_load);
+
+                                foreach ($horraire_tab_actu as $tab_actu) {
+                                    array_push($tab_horaire_actu_deb, $tab_actu->start);
+                                    array_push($tab_horaire_actu_fin, $tab_actu->end);
+                                }
+                                $ind = 0;
+                                $existe = 0;
+
+                                $sql = "INSERT INTO `clementine_reservation_horaire_has_option` (`repeat_all`,`month`,`week`,`till`,`id_horaire`,`repeat`) VALUES ('jour','null','null','" . $val_till . "','" . $max_id . "','null') ";
+                                $db->query($sql);
+                                $continue = true;
+                            } else {
+                                $res = array();
+                                $res2 = array();
+                                $res2['till'] = $val_till;
+                                $res2['repeat_all'] = $val;
+                                $res['start_date'] = $insecure_values['clementine_reservation_horaire-start_date'];
+                                $res['start_hour'] = $insecure_values['clementine_reservation_horaire-start_hour'] . ':00';
+                                $res['end_date'] = $insecure_values['clementine_reservation_horaire-end_date'];
+                                $res['end_hour'] = $insecure_values['clementine_reservation_horaire-end_hour'] . ':00';
+                                $res['comment'] = $insecure_values['clementine_reservation_horaire-comment'];
+                                $res['to_add'] = $insecure_values['clementine_reservation_horaire-to_add'];
+                                $res['id'] = $max_id;
+                                $start_date_load = $insecure_values['clementine_reservation_horaire-start_date'];
+                                $end_date_load = $val_till;
+                                $request = $this->getRequest();
+                                $id_ressource = $_GET['clementine_reservation_ressource-id'];
+
+                                $sql = <<<SQL
+                    SELECT time_creneaux, maximum_number_place, maximum_number_place_by_reservation
+                    FROM clementine_reservation_ressource
+                    WHERE id = $id_ressource
+SQL;
+                                $stmt = $db->query($sql);
+                                $res3 = $db->fetch_assoc($stmt);
+                                $times_creneaux = $res3['time_creneaux'];
+                                $maximum_number_place = $res3['maximum_number_place'];
+                                $maximum_number_place_by_reservation = $res3['maximum_number_place_by_reservation'];
+
+                                $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
+                                if (!empty($insecure_values['clementine_reservation_horaire-time_creneaux']) && $insecure_values['clementine_reservation_horaire-time_creneaux'] != "00:00:00") {
+                                    $times_creneaux = $insecure_values['clementine_reservation_horaire-time_creneaux'];
+                                    $time_creneaux = $fullcalendar_helper->timeToSecond($times_creneaux);
+                                }
+                                if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place'])) {
+                                    $maximum_number_place = $insecure_values['clementine_reservation_horaire-maximum_number_place'];
+                                }
+                                if (!empty($insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'])) {
+                                    $maximum_number_place_by_reservation = $insecure_values['clementine_reservation_horaire-maximum_number_place_by_reservation'];
+                                }
+                                $sec_start = strtotime($res['start_date']);
+                                $sec_end = strtotime($res['end_date']);
+                                $diff_datedeb_datefin = $sec_end - $sec_start;
+                                $horaire_tab_crea = $fullcalendar_mdl->repeat_all_spec_day($res, $res2, $start_date_load, $end_date_load, $diff_datedeb_datefin, $request, $times_creneaux, $horaire_tab_crea, true, false, $maximum_number_place, $maximum_number_place_by_reservation);
+
+                                foreach ($horaire_tab_crea as $tab_crea) {
+                                    array_push($tab_horaire_crea_deb, $tab_crea->start);
+                                    array_push($tab_horaire_crea_fin, $tab_crea->end);
+                                }
+
+                                $horraire_tab_actu = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $start_date_load, $end_date_load);
+
+                                foreach ($horraire_tab_actu as $tab_actu) {
+                                    array_push($tab_horaire_actu_deb, $tab_actu->start);
+                                    array_push($tab_horaire_actu_fin, $tab_actu->end);
+                                }
+                                $ind = 0;
+                                $existe = 0;
+
+                                $sql = "INSERT INTO `clementine_reservation_horaire_has_option` (`repeat_all`,`month`,`week`,`till`,`id_horaire`,`repeat`) VALUES ('" . $val . "','null','null','" . $val_till . "','" . $max_id . "','null') ";
+                                $db->query($sql);
+                                $continue = true;
                             }
                             $ind = 0;
                             $existe = 0;
@@ -685,12 +685,6 @@ SQL;
                             $db->query($sql);
                             $continue = true;
                         }
-                        $ind = 0;
-                        $existe = 0;
-
-                        $sql = "INSERT INTO `clementine_reservation_horaire_has_option` (`repeat_all`,`month`,`week`,`till`,`id_horaire`,`repeat`) VALUES ('" . $val . "','null','null','" . $val_till . "','" . $max_id . "','null') ";
-                        $db->query($sql);
-                        $continue = true;
                     }
                 }
             }
@@ -721,6 +715,7 @@ SQL;
                 $db->query('COMMIT');
             }
         }
+
         return $my_errors;
     }
 
