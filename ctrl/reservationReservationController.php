@@ -119,7 +119,7 @@ class reservationReservationController extends reservationReservationController_
             $sql = "UPDATE clementine_reservation SET cancel = 1 WHERE id = $id_reservation";
             $db->query($sql);
              
-            header("Location: " . $params['url_retour']);
+            $this->getModel('fonctions')->redirect($params['url_retour']);
         }
     }
     /**
@@ -320,7 +320,7 @@ class reservationReservationController extends reservationReservationController_
     {
         if ($request->POST) {
             $this->data['id_ressource'] = $request->POST['ressource'];
-            header('Location: ' . __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->POST['ressource']);
+            $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->POST['ressource']);
         } else if ($request->get('int', 'clementine_reservation_ressource-id') > 0) {
             $this->data['id_ressource'] = $request->GET['clementine_reservation_ressource-id'];
         } else if ($request->get('int', 'id_ressource') > 0) {
@@ -900,7 +900,7 @@ class reservationReservationController extends reservationReservationController_
             $commentaire = $request->POST['commentaire'];
             $horaire_mdl = $this->getModel('horaire');
             $horaire_mdl->createHoraireSuppr($clementine_reservation_ressource_id, $start_date, $commentaire);
-            header('Location: ' . __WWW__ . '/reservation/calendar');
+            $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar');
         }
     }
     /**
