@@ -14,34 +14,27 @@ if ($request->ACT != "all" && isset($request->GET['clementine_reservation_ressou
 <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" style="height: 103%;" aria-labelledby="videoModal" aria-hidden="true" >
     <div class="body-newframe">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="display: none;">&times;</button>
-        <iframe id="frame_modal" width="100%" height="100%" style="padding: 0; margin: 0; border: 0;" src="" onLoad='var id_ressource = <?php
-echo json_encode($id); ?>;
-
+        <iframe id="frame_modal" width="100%" height="100%" style="padding: 0; margin: 0; border: 0;" src="" onLoad='var id_ressource = <?php echo json_encode($id); ?>;
                 if (window.jQuery) {
                     $("#frame_modal").contents().find("a").click(function(event) {
                         var current = event.currentTarget;
                         if (current.className.search("clementine_crud-backbutton") == -1 && current.className.search("clementine_crud-update-blocked") == -1) {
                             event.preventDefault();
-                        }    
+                        }
                     });
-
-                    var current = this.contentWindow.location.href;                
+                    var current = this.contentWindow.location.href;
                     var update = 0;
                     if (current.search("reservation/update")) {
                         update = 1;
                     }
-                    console.log(current);
-                    console.log(update);
                     var url =  $(this).attr("src");
                     if (current != url && current.search("choix") == -1 && current.search("block") == -1 && current.search("delete") == -1 && update == 0) {
-                        console.log("kek");
                         $(".close").trigger("click");
                         if (id_ressource != -1) {
                             $("#calendar"+id_ressource).fullCalendar("refetchEvents");
                         } else {
                             $("#calendar").fullCalendar("refetchEvents");
                         }
-
                     }
                 }'></iframe>
     </div>

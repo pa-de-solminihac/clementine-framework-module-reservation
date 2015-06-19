@@ -333,7 +333,11 @@ class reservationReservationController extends reservationReservationController_
      */
     public function indexAction($request, $params = null)
     {
-        $params['where'] = 'clementine_reservation.cancel = 0';
+        if (empty($params['where'])) {
+            $params['where'] = 'clementine_reservation.cancel = 0';
+        } else {
+            $params['where'] .= ' AND clementine_reservation.cancel = 0';
+        }
         if (isset($request->GET['start_date']) && isset($request->GET['end_date'])) {
             $params['where'].= ' AND clementine_reservation.start_date = "' . $request->GET['start_date'] . '" AND clementine_reservation.end_date="' . $request->GET['end_date'] . '"';
         }
