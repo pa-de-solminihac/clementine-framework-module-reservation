@@ -105,6 +105,9 @@ class reservationReservationController extends reservationReservationController_
     public function deleteAction($request, $params = null)
     {
         $id_reservation = $request->get('int', 'clementine_reservation-id');
+        if (!isset($params['url_retour']) || empty($params['url_retour'])) {
+            $params['url_retour'] = __WWW__ . '/reservation/calendar';
+        }
         if ($request->POST) {
             if (isset($request->GET['send']) && $request->GET['send'] == "true") {
                 $this->data['send'] = true;
@@ -115,7 +118,8 @@ class reservationReservationController extends reservationReservationController_
             $db = $this->getModel('db');
             $sql = "UPDATE clementine_reservation SET cancel = 1 WHERE id = $id_reservation";
             $db->query($sql);
-            header('Location: ' . __WWW__ . '/reservation/calendar');
+             
+            header("Location: " . $params['url_retour']);
         }
     }
     /**
@@ -445,7 +449,9 @@ class reservationReservationController extends reservationReservationController_
     public function updateAction($request, $params = null)
     {
         $params['force_default_value'] = 1;
-        $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
+        if (!isset($params['url_retour']) || empty($params['url_retour'])) {
+            $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
+        }
 
         if (isset($request->GET['start_date'])) {
             $this->data['id_ressource_create'] = $request->get('int', 'clementine_reservation_ressource-id');
