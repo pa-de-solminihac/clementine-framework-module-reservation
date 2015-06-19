@@ -12,6 +12,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
     public function deleteAction($request, $params = null)
     {
         $db = $this->getModel('db');
+        $ns = $this->getModel('fonctions');
         $id_horaire = $request->GET['clementine_reservation_horaire-id'];
         $id_ressource = $request->GET['clementine_reservation_ressource-id'];
         $reservation_mdl = $this->getModel('reservation');
@@ -20,13 +21,21 @@ class reservationHoraireController extends reservationHoraireController_Parent
         $date_horaire = $horaire_mdl->getDateById($id_horaire);
         $date_reserv = $reservation_mdl->getIdAndDateById($id_ressource);
         if ($this->getReservationHasHoraire($date_horaire, $date_reserv)) {
-            header('Location: ' . __WWW__ . '/horaire/update?clementine_reservation_ressource-id=' . $request->GET['clementine_reservation_ressource-id'] . '&clementine_reservation_ressource_has_horaire-ressource_id=' . $request->GET['clementine_reservation_ressource_has_horaire-ressource_id'] . '&clementine_reservation_ressource_has_horaire-horaire_id=' . $request->GET['clementine_reservation_ressource_has_horaire-horaire_id'] . '&clementine_reservation_horaire-id=' . $request->GET['clementine_reservation_horaire-id'] . '&has_horaire=1');
+            $ns->redirect(__WWW__ . '/horaire/update?clementine_reservation_ressource-id='
+                . $request->get('int', 'clementine_reservation_ressource-id')
+                . '&clementine_reservation_ressource_has_horaire-ressource_id='
+                . $request->get('int', 'clementine_reservation_ressource_has_horaire-ressource_id')
+                . '&clementine_reservation_ressource_has_horaire-horaire_id='
+                . $request->get('int', 'clementine_reservation_ressource_has_horaire-horaire_id')
+                . '&clementine_reservation_horaire-id='
+                . $request->get('int', 'clementine_reservation_horaire-id')
+                . '&has_horaire=1');
         } else {
             $sql = "DELETE FROM clementine_reservation_ressource_has_horaire WHERE horaire_id = $id_horaire";
             $db->query($sql);
             $sql = "DELETE FROM clementine_reservation_horaire WHERE id = $id_horaire";
             $db->query($sql);
-            header('Location: ' . __WWW__ . '/reservation/calendar');
+            $ns->redirect(__WWW__ . '/reservation/calendar');
         }
 
     }
@@ -714,6 +723,7 @@ SQL;
         }
         return $my_errors;
     }
+
     /**
      *  getTotalHoraireExcep : Renvoie les horaires exceptions qui sont stocké dans tab_horaire qui contient toute les horaires
      *
