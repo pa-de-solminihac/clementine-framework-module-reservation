@@ -68,7 +68,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $db->query($sql);
         $sql = "DELETE FROM clementine_reservation_ressource WHERE id = $id_ressource";
         $db->query($sql);
-        header('Location: ' . __WWW__ . '/reservation/calendar');
+        $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar');
     }
     /**
      *  rename_fields : Renomme tous les champs pour qu'il soit plaisant à l'affichage
