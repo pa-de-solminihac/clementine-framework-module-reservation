@@ -30,7 +30,9 @@ if ($request->ACT != "all" && isset($request->GET['clementine_reservation_ressou
                     var url =  $(this).attr("src");
                     if (current != url && current.search("choix") == -1 && current.search("block") == -1 && current.search("delete") == -1 && update == 0) {
                         $(".close").trigger("click");
-                        if (id_ressource != -1) {
+                        if (id_ressource == 0) {
+                            $("#calendar1").fullCalendar("refetchEvents");
+                        } else if (id_ressource != -1) {
                             $("#calendar"+id_ressource).fullCalendar("refetchEvents");
                         } else {
                             $("#calendar").fullCalendar("refetchEvents");
