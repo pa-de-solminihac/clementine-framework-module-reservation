@@ -39,9 +39,13 @@ SQL;
             $start_date_load = date("Y-m-d", mktime(0, 0, 0, $mois_date_load_deb + 1, 1, $an_date_laod_deb));
             list($useless1, $useless2, $max_day) = explode('-', date("Y-m-t", strtotime($start_date_load)));
             $end_date_load = date("Y-m-d", mktime(0, 0, 0, $mois_date_load_deb + 1, $max_day + 1, $an_date_laod_deb));
+            list($useless1, $useless2, $max_day) = explode('-', date("Y-m-t", strtotime($end_date_load)));
+            $end_date_load = date("Y-m-d", mktime(0, 0, 0, $mois_date_load_deb + 1, $max_day + 1, $an_date_laod_deb)); 
         } else if ($mois_date_load_end - $mois_date_load_deb == 1) {
             if ($jour_date_load_deb == "01") {
                 list($useless1, $useless2, $max_day) = explode('-', date("Y-m-t", strtotime($start_date_load)));
+                $end_date_load = date("Y-m-d", mktime(0, 0, 0, $mois_date_load_deb + 1, $max_day + 1, $an_date_laod_deb));
+                list($useless1, $useless2, $max_day) = explode('-', date("Y-m-t", strtotime($end_date_load)));
                 $end_date_load = date("Y-m-d", mktime(0, 0, 0, $mois_date_load_deb + 1, $max_day + 1, $an_date_laod_deb));
             }
         }
