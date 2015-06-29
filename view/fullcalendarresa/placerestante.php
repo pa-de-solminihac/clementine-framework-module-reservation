@@ -4,8 +4,8 @@ $reservation_mdl = $this->getModel('reservation');
 $fullcalendar_helper = $this->getHelper('fullcalendarresa');
 $ressource_mdl = $this->getModel('ressource');
 $horaire_mdl = $this->getModel('horaire');
-$id_ressource = $request->GET['clementine_reservation_ressource-id'];
-list($day, $hour) = explode('_', $request->GET['start_date']);
+$id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+list($day, $hour) = explode('_', $request->get('string', 'start_date'));
 list($year, $month, $days) = explode('-', $day);
 $next_day = date("Y-m-d", mktime(0, 0, 0, $month, $days + 1, $year));
 $list_creneaux = $data['list_creneaux'];
@@ -54,7 +54,7 @@ $end_date = date($day . ' ' . $end_date);
 $start_date = date($day . ' ' . $hour);
 $nb_place_prise = $reservation_mdl->getNbPlacePrise($start_date, $end_date, $id_ressource);
 $nb_place_restante = $nb_place_max - $nb_place_prise;
-$lang = clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_fullcalendar']['lang'];
 ?>
 <script type="text/javascript">
     jQuery(document).ready(function() { 

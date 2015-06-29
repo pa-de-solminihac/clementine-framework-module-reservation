@@ -1,6 +1,6 @@
 <?php
 $users = $this->getModel('users');
-$lang = clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_fullcalendar']['lang'];
 $privileges = array(
     'clementine_reservation_gerer_reservation' => true
 );

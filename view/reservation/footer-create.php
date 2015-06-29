@@ -1,6 +1,6 @@
 <?php
 $this->getParentBlock($data, $request);
-if (!empty(clementine::$config['module_reservation']['placerestante']) && clementine::$config['module_reservation']['placerestante'] == 1) {
+if (!empty(Clementine::$config['module_reservation']['placerestante']) && Clementine::$config['module_reservation']['placerestante'] == 1) {
     $this->getBlock('fullcalendarresa/placerestante', $data, $request);
 }
 ?>

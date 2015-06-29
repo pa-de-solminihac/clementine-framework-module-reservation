@@ -2,8 +2,8 @@
 // Déclaration des variables utile à la création d'un calendrier
 $ressource = $data['timeline_ressource'];
 $ressource_name = 'Ressources';
-if (!empty(clementine::$config['module_fullcalendar']['ressource'])) {
-    $ressource_name = clementine::$config['module_fullcalendar']['ressource'];
+if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
+    $ressource_name = Clementine::$config['module_fullcalendar']['ressource'];
 }
 $creneaux = '00:30:00';
 $user_mdl = $this->getModel('users');

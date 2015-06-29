@@ -1,12 +1,14 @@
 <!-- Création de la modal et code associé -->
 <a href="#" id="Modal" class="btn btn-default" data-toggle="modal" data-target="#videoModal" ></a>
 <?php
-if ($request->ACT != "all" && isset($request->GET['clementine_reservation_ressource-id']) && $request->GET['clementine_reservation_ressource-id'] > 0) {
-    $id = $request->GET['clementine_reservation_ressource-id'];
+$ressource_id = $request->get('int', 'clementine_reservation_ressource-id');
+$id_ressource = $request->get('int', 'id_ressource');
+if ($request->ACT != "all" && $ressource_id > 0) {
+    $id = $ressource_id;
 } else if ($request->ACT == "all") {
     $id = - 1;
-} else if (isset($request->GET['id_ressource']) && $request->GET['id_ressource'] > 0) {
-    $id = $request->GET['id_ressource'];
+} else if ($id_ressource > 0) {
+    $id = $id_ressource;
 } else {
     $id = 0;
 }

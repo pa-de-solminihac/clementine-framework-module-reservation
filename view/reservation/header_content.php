@@ -11,7 +11,7 @@ if (!$user_mdl->hasPrivilege($privileges)) {
 }
 $libelle = $data['libelle'];
 $id_ressource = $data['id_ressource'];
-$lang = clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_fullcalendar']['lang'];
 $auth = $user_mdl->getAuth();
 if ($lang == 'fr') {
     $list = 'Liste';

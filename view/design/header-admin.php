@@ -4,24 +4,23 @@ $ns = $this->getModel('fonctions');
 $users = $this->getModel('users');
 $auth = $users->getAuth();
 $userActual = $users->getUserByLogin($auth['login']);
-if (isset($request->GET['clementine_reservation_ressource-id'])) {
-    $data['id_ressource'] = $request->GET['clementine_reservation_ressource-id'];
-} else {
+$data['id_ressource'] = $request->get('int', 'clementine_reservation_ressource-id');
+if (!$data['id_ressource']) {
     $ressource_mdl = $this->getModel('ressource');
     $data['id_ressource'] = $ressource_mdl->getFirstIdRessource();
 }
 $ressource_title = 'Gérer les ressources';
 // Pour faciliter l'affichage si config il y a on affiche gerer la seule ressource qui est dans le config.ini
-if (!empty(clementine::$config['module_fullcalendar']['ressource'])) {
-    $ressource_title = "Gérer les " . clementine::$config['module_fullcalendar']['ressource'] . 's';
+if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
+    $ressource_title = "Gérer les " . Clementine::$config['module_fullcalendar']['ressource'] . 's';
 }
 $menus = array(
     $ressource_title,
 );
-if (clementine::$config['module_fullcalendar']['lang'] == 'en') {
+if (Clementine::$config['module_fullcalendar']['lang'] == 'en') {
     $ressource_title = 'Managing resources';
-    if (!empty(clementine::$config['module_fullcalendar']['ressource'])) {
-        $ressource_title = 'Manage ' . clementine::$config['module_fullcalendar']['ressource'] . 's';
+    if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
+        $ressource_title = 'Manage ' . Clementine::$config['module_fullcalendar']['ressource'] . 's';
     }
     $menus = array(
         $ressource_title,

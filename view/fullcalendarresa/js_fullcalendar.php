@@ -18,7 +18,7 @@ if (!$user_mdl->hasPrivilege($privileges)) {
 $auth = $user_mdl->getAuth();
 $data['info_taille'] = '00:40:00';
 $horraire_except_util = $data['list_horraire_util'];
-$lang = clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_fullcalendar']['lang'];
 $horaire_mdl = $this->getModel('horaire');
 $min_time = $horaire_mdl->getMinHoraire($data['id_ressource']);
 $max_time = $horaire_mdl->getMaxHoraire($data['id_ressource']);
@@ -30,9 +30,9 @@ if (isset($_GET['h_active'])) {
 } else {
     $h_active = false;
 }
-$mois_ac = clementine::$config['module_fullcalendar']['mois_active'];
+$mois_ac = Clementine::$config['module_fullcalendar']['mois_active'];
 if ($mois_ac == "true") {
-    $nb_avant_more = clementine::$config['module_fullcalendar']['nb_avant_more'];
+    $nb_avant_more = Clementine::$config['module_fullcalendar']['nb_avant_more'];
 } else {
     $nb_avant_more = false;
 }
@@ -271,7 +271,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             // Si l'on clique sur un évenement affiche la modale correspondantes
             eventRender: function (event, element) {
                     if (event.url) {
-                        var config = <?php echo json_encode(clementine::$config['module_reservation']['url_connect']); ?>;
+                        var config = <?php echo json_encode(Clementine::$config['module_reservation']['url_connect']); ?>;
                         if (event.url.search("choix") == -1 && event.url.search(config) == -1) {
                             videoSRC = event.url,
                             element.attr('href', 'javascript:void(0);');

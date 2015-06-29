@@ -12,28 +12,11 @@ if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections
             $data['total_horaire_resa'] = $data['matrice_valeur'][$i][4];
             $cssjs->register_foot('fullcalendarresa/js_fullcalendar-' . $data['id_ressource'], $this->getBlockHtml('fullcalendarresa/js_fullcalendar', $data, $request));
         }
-    } else { // Affichage que du calendrier de la ressource séléctionné
+    } else { // Affichage que du calendrier de la ressource selectionne
         $data['total_horaire_resa'] = $data['plage_horraire_util'];
         $cssjs->register_foot('fullcalendarresa/js_fullcalendar-' . $data['id_ressource'], $this->getBlockHtml('fullcalendarresa/js_fullcalendar', $data, $request));
     }
     // Si l'heure est activez, checker le bouton
-
-?>
-     <!-- <form action="" method="post" >
-        <select id="list_ressources" name='ressource'> -->
-<?php
-    // if ($list_total_ressource[$i][0] == $request->get('int', 'clementine_reservation_ressource-id')) {
-    // echo '<option value="' . $list_total_ressource[$i][0] . '" selected>' . $list_total_ressource[$i][1] . '</option>';
-    // } else {
-    // echo '<option value="' . $list_total_ressource[$i][0] . '">' . $list_total_ressource[$i][1] . '</option>';
-    // }
-    // echo '<option value="-1">Tous</option>'
-
-?>
-      <!--  </select>
-        <input type="submit" value="select">
-    </form>-->
-<?php
 } else {
     $cssjs = $this->getModel('cssjs');
     if ($data['choix_ress'] == - 1) // Affichage de tout les calendriers
@@ -48,7 +31,7 @@ if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections
                 echo json_encode(array_merge($data['total_horaire_resa'], $data['list_horraire_util']));
             }
         }
-    } else { // Affichage que du calendrier de la ressource séléctionné
+    } else { // Affichage que du calendrier de la ressource selectionne
         $data['total_horaire_resa'] = array_unique($data['plage_horraire_util'], SORT_REGULAR);
         echo json_encode(array_merge($data['total_horaire_resa'], $data['list_horraire_util']));
     }

@@ -1,6 +1,6 @@
 <?php
 // Envoie de mail si on le désire
-if (!$request->AJAX && clementine::$config['mail']['send'] == 1) {
+if (!$request->AJAX && Clementine::$config['mail']['send'] == 1) {
 ?>
 <script type="text/javascript">
 	jQuery('form').on('submit', function(e)) {

@@ -11,11 +11,10 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
      */
     public function createCalendarUtilisateur($horraire_dispo, $id_ressource, $params = null, $start_date_load, $end_date_load, $list_creneaux, $tab_horaire, $nb_recherche)
     {
-        $lang = clementine::$config['module_fullcalendar']['lang'];
-        $dispo = clementine::$config['module_fullcalendar']['dispo'];
-        $incomplet = clementine::$config['module_fullcalendar']['incomplet'];
-        $full = clementine::$config['module_fullcalendar']['complet'];
-
+        $lang = Clementine::$config['module_fullcalendar']['lang'];
+        $dispo = Clementine::$config['module_fullcalendar']['dispo'];
+        $incomplet = Clementine::$config['module_fullcalendar']['incomplet'];
+        $full = Clementine::$config['module_fullcalendar']['complet'];
         if (isset($params['color']['dispo'])) {
             $dispo = $params['color']['dispo'];
         } elseif (isset($params['color']['incomplet'])) {
@@ -26,10 +25,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         if (isset($params['number_max_print_col'])) {
             $number_max_print_col = $params['number_max_print_col'];
         } else {
-            $number_max_print_col = clementine::$config['module_fullcalendar']['number_max_print_col'];
+            $number_max_print_col = Clementine::$config['module_fullcalendar']['number_max_print_col'];
         }
         $request = $this->getRequest();
-
         $reservation_mdl = $this->getModel('reservation');
         $fullcalendar_mdl = $this->getModel('fullcalendarresa');
         $user = $this->getModel('users');
@@ -37,7 +35,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $horaire_ctrl = $this->getController('horaire');
         $fullcalendar_helper = $this->getHelper('fullcalendarresa');
         $horaire_mdl = $this->getModel('horaire');
-
         $tab_url_resa = $reservation_mdl->getUrlResa($id_ressource, $start_date_load, $end_date_load);
         $orange_tab = $reservation_mdl->getTabNbPlaceSup1($id_ressource, $start_date_load, $end_date_load);
         $creneaux = $ressource_mdl->getCreneaux($id_ressource);
@@ -59,7 +56,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         }
         $creneaux_sec = $fullcalendar_helper->timeToSecond($creneaux);
         $tab_horaire_except = $horaire_ctrl->getTotalHoraireExcep($tab_horaire);
-
         $privileges = array(
             'clementine_reservation_gerer_reservation' => true
         );
@@ -75,7 +71,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
             $edit = true;
         } else if ($client) {
             $auth = $user->getAuth();
-            $name = $auth[clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $auth[clementine::$config['module_reservation']['getuser_firstname']];
+            $name = $auth[Clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $auth[Clementine::$config['module_reservation']['getuser_firstname']];
         }
         if ($name) {
             $connecte = true;
@@ -85,9 +81,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $under_file = trim($request->ACT);
         if ($under_file == "updateajax") {
             $under_file = 'calendar';
-        }
-        if ($admin && $under_file != "calendar" && $under_file != "createresa" && isset($request->GET)) {
-            $reste = $request->GET;
         }
         if ($lang == 'fr') {
             $title_dispo = 'Dispo';
@@ -101,8 +94,8 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
             $title_non_autoriser = 'Unauthorized';
         }
         return $this->boucleCreationCalendar($list_creneaux, $horraire_dispo, $reservation_mdl, $id_ressource, $admin, $under_file, $orange_tab, $full, $edit, $number_max_print_col, $lang, $start_date_load, $end_date_load, $title_dispo, $title_incomplet, $title_non_dispo, $title_non_autoriser, $nb_recherche, $dispo, $incomplet, $full, $nbPlaceMax, $nb_place_max_horaire, $nb_place_max_reservation, $connecte, $name, $tab_url_resa);
-
     }
+
     /**
      * boucleCreationCalendar : Fais partis des 3 fonctions de la création du calendrier.
      *                          Cette fonction s'occupe de tous la fonctionnalité de base du calendrier,
@@ -122,18 +115,18 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
 
         $plein = true;
         $url_pass = false;
-        if (clementine::$config['module_reservation']['force'] == 0) {
+        if (Clementine::$config['module_reservation']['force'] == 0) {
             if (!$auth) {
                 $url = __WWW__ . '/reservation/choix';
             } else {
                 $plein = false;
             }
-        } else if (clementine::$config['module_reservation']['force'] == 1) {
+        } else if (Clementine::$config['module_reservation']['force'] == 1) {
             if (!$auth) {
-                if (!empty(clementine::$config['module_reservation']['url_connect'])) {
-                    $url = __WWW__ . clementine::$config['module_reservation']['url_connect'];
-                } else if (!empty(clementine::$config['module_reservation']['url_register'])) {
-                    $url = __WWW__ . clementine::$config['module_reservation']['url_register'];
+                if (!empty(Clementine::$config['module_reservation']['url_connect'])) {
+                    $url = __WWW__ . Clementine::$config['module_reservation']['url_connect'];
+                } else if (!empty(Clementine::$config['module_reservation']['url_register'])) {
+                    $url = __WWW__ . Clementine::$config['module_reservation']['url_register'];
                 } else {
                     $plein = false;
                 }
@@ -256,6 +249,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $this->calendarPlusResa($list_creneaux, $horraire_dispo, $reservation_mdl, $id_ressource, $admin, $under_file, $orange_tab, $tab_disponibilite, $full, $edit, $number_max_print_col, $lang, $connecte, $name, $tab_url_resa);
 
     }
+
     /**
      * calendarPlusResa : Fais partis des 3 fonctions de la création du calendrier.
      *                    Cette fonction s'occupe d'ajouter les reservations aux calendrier,
@@ -288,7 +282,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                                     $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation' . $l]);
                                     if (empty($title) || $title == " ") {
                                         $usr = $user->getUser($reservation_mdl->getIdClemByIdResa($url_update['id_reservation' . $l]));
-                                        $title = $usr[clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[clementine::$config['module_reservation']['getuser_firstname']];
+                                        $title = $usr[Clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[Clementine::$config['module_reservation']['getuser_firstname']];
                                     }
                                     if ($connecte) {
                                         if ($title == $name) {
@@ -344,7 +338,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                             $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation0']);
                             if (empty($title) || $title == " ") {
                                 $usr = $user->getUser($reservation_mdl->getIdClemByIdResa($url_update['id_reservation' . $l]));
-                                $title = $usr[clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[clementine::$config['module_reservation']['getuser_firstname']];
+                                $title = $usr[Clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[Clementine::$config['module_reservation']['getuser_firstname']];
                             }
                             if ($connecte) {
                                 if ($title == $name) {
@@ -417,6 +411,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $tab_disponibilite = array_merge($tab_disponibilite, $excep);
         return $tab_disponibilite;
     }
+
     /**
      * verifDatePossible : Et l'équivalent d'un in_array mais pour les dates et/ou les créneaux
      *
@@ -438,6 +433,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         }
         return $valide;
     }
+
     /**
      * getListCreneauxParJour : retourne la liste des créneaux sur une heure donné
      *
@@ -455,6 +451,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         }
         return $return_tab;
     }
+
     /**
      * createTimeline : A partir de la matrice de création créé la timeline des ressources pour la vue tous
      *
@@ -498,11 +495,13 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $tab_resultat;
 
     }
-    public function createNumberCreateOrange($l,$url_update,$reservation_mdl,$connecte,$name,$horraire_dispo,$i,$start,$end,$time_creneaux,&$tab_disponibilite) {
+
+    public function createNumberCreateOrange($l,$url_update,$reservation_mdl,$connecte,$name,$horraire_dispo,$i,$start,$end,$time_creneaux,&$tab_disponibilite)
+    {
         $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation' . $l]);
         if (empty($title) || $title == " ") {
             $usr = $user->getUser($reservation_mdl->getIdClemByIdResa($url_update['id_reservation' . $l]));
-            $title = $usr[clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[clementine::$config['module_reservation']['getuser_firstname']];
+            $title = $usr[Clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[Clementine::$config['module_reservation']['getuser_firstname']];
         }
         if ($connecte) {
             if ($title == $name) {
@@ -533,7 +532,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         }
         return $tab_disponibilite;
     }
-    public function createNonAutorise($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite) {
+
+    public function createNonAutorise($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite)
+    {
         foreach ($nb_place_max_horaire as $key => $value) {
             if (($horraire_dispo[$i] > $value['start_date'] && $horraire_dispo[$i] < $value['end_date']) || ($horraire_dispo[$i] == $value['start_date'] && $start >= $value['start_hour']) || ($horraire_dispo[$i] == $value['end_date'] && $end <= $value['end_hour'])) {
                 if (is_numeric($nb_recherche) && !empty($value["maximum_number_place_by_reservation"]) && $nb_recherche > $value['maximum_number_place_by_reservation']) {
@@ -570,7 +571,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $resultat['nbPlaceMax'] = $nbPlaceMax;
         return $resultat;
     }
-     public function createIfAdmin($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp) {
+
+    public function createIfAdmin($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp)
+    {
          $disponibilite = (object)array(
             'start' => $horraire_dispo[$i] . 'T' . $start,
             'end' => $horraire_dispo[$i] . 'T' . $end,
@@ -649,13 +652,14 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $resultat['nbPlaceMax'] = $nbPlaceMax;
         $resultat['color'] = $color;
         return $resultat;
-        
     }
-     public function ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp,$l,$connecte,$name) {
+
+    public function ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp,$l,$connecte,$name)
+    {
         $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation0']);
         if (empty($title) || $title == " ") {
             $usr = $user->getUser($reservation_mdl->getIdClemByIdResa($url_update['id_reservation' . $l]));
-            $title = $usr[clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[clementine::$config['module_reservation']['getuser_firstname']];
+            $title = $usr[Clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[Clementine::$config['module_reservation']['getuser_firstname']];
         }
         if ($connecte) {
             if ($title == $name) {
@@ -756,7 +760,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $resultat;
 
     }
-    public function ifNonConnecte($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$title_dispo,$url,$nb_place_max_tmp) {
+
+    public function ifNonConnecte($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$title_dispo,$url,$nb_place_max_tmp)
+    {
         $continue = false;
         if (!empty($nb_place_max_horaire)) {
             foreach ($nb_place_max_horaire as $key => $value) {
@@ -820,7 +826,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $resultat;
 
     }
-    public function ifNonTabOrange($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$title_dispo,$nb_place_max_tmp,$url) {
+
+    public function ifNonTabOrange($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$title_dispo,$nb_place_max_tmp,$url)
+    {
         $continue = false;
         if (!empty($nb_place_max_horaire)) {
             foreach ($nb_place_max_horaire as $key => $value) {
@@ -874,4 +882,5 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $resultat['nbPlaceMax'] = $nbPlaceMax;
         return $resultat;
     }
+
 }

@@ -10,16 +10,15 @@ class reservationRessourceController extends reservationRessourceController_Pare
      */
     public function createAction($request, $params = null)
     {
-        if ($request->POST && !empty($request->POST['clementine_reservation_ressource-id'])) {
-            $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->POST['clementine_reservation_ressource-id'];
+        if ($id_ressource = $request->post('int', 'clementine_reservation_ressource-id')) {
+            $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $id_ressource;
         }
-        $reservation_ctrl = $this->getController('reservation');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
-        $reservation_ctrl->tryAccess($privileges);
+        $this->getModel('users')->needPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         return parent::createAction($request, $params);
     }
+
     /**
      *  updateAction : Controlleur s'occupant de la modification des ressources
      *
@@ -29,13 +28,12 @@ class reservationRessourceController extends reservationRessourceController_Pare
     public function updateAction($request, $params = null)
     {
         $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
-        $reservation_ctrl = $this->getController('reservation');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
-        $reservation_ctrl->tryAccess($privileges);
+        $this->getModel('users')->needPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         return parent::updateAction($request, $params);
     }
+
     /**
      *  indexAction : Controlleur s'occupant de l'affichage des ressources sous forme de liste
      *
@@ -45,13 +43,12 @@ class reservationRessourceController extends reservationRessourceController_Pare
     public function indexAction($request, $params = null)
     {
         $params['url_retour'] = __WWW__ . '/reservation/calendar';
-        $reservation_ctrl = $this->getController('reservation');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
-        $reservation_ctrl->tryAccess($privileges);
+        $this->getModel('users')->needPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         return parent::indexAction($request, $params);
     }
+
     /**
      *  deleteAction : Controlleur s'occupant de la suppression  des ressources
      *
@@ -70,6 +67,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $db->query($sql);
         $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar');
     }
+
     /**
      *  rename_fields : Renomme tous les champs pour qu'il soit plaisant à l'affichage
      *
@@ -79,7 +77,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
     public function rename_fields($request, $params = null)
     {
         $ret = parent::rename_fields_create_or_update($request, $params);
-        if (clementine::$config['module_fullcalendar']['lang'] == 'fr') {
+        if (Clementine::$config['module_fullcalendar']['lang'] == 'fr') {
             $this->mapFieldName('clementine_reservation_ressource.maximum_number_place', 'Nombre de place maximum');
             $this->mapFieldName('clementine_reservation_ressource.maximum_number_place_by_reservation', 'Nombre de place maximum par réservation');
             $this->mapFieldName('clementine_reservation_ressource.time_creneaux', 'Temp par creneaux');
@@ -91,6 +89,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         }
         return $ret;
     }
+
     /**
      *  alter_values : Controlleur s'occupant de la création des ressources
      *
@@ -109,6 +108,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $this->setDefaultValue('clementine_reservation_ressource.id', $ressource->getMaxIdRes() + 1);
         return $ret;
     }
+
     /**
      *  override_fields_create_or_update : surcharge les champs dans la vue create ou update
      *
@@ -128,19 +128,17 @@ class reservationRessourceController extends reservationRessourceController_Pare
 
         $this->setMandatoryField('clementine_reservation_ressource.libelle');
         $ressource_mdl = $this->getModel('ressource');
-        if (isset($request->GET['clementine_reservation_ressource-id'])) {
-            if ($ressource_mdl->ressourceHasHoraire($request->GET['clementine_reservation_ressource-id']) > 0) {
-                $this->overrideField('clementine_reservation_ressource.time_creneaux', array(
-                    'readonly' => 'true',
-                ));
-            } else {
-                $this->setMandatoryField('clementine_reservation_ressource.time_creneaux');
-            }
+        $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+        if ($ressource_mdl->ressourceHasHoraire($id_ressource) > 0) {
+            $this->overrideField('clementine_reservation_ressource.time_creneaux', array(
+                'readonly' => 'true',
+            ));
         } else {
             $this->setMandatoryField('clementine_reservation_ressource.time_creneaux');
         }
         return $ret;
     }
+
     /**
      *  hide_fields_index : cache les champs dans la vue index
      *
@@ -154,6 +152,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $this->hideField('clementine_reservation_ressource.client_id');
         return $ret;
     }
+
     /**
      *  move_fields : S'occupe de bouger les champs pour les mettres à leur placess
      *
@@ -167,6 +166,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
         $this->moveField('clementine_reservation_ressource.maximum_number_place_by_reservation', 'clementine_reservation_ressource.time_creneaux');
         return $ret;
     }
+
     /**
      *  validate : valide le faites que les nombre de place maximum par réservation
      *
@@ -181,4 +181,5 @@ class reservationRessourceController extends reservationRessourceController_Pare
         }
         return $my_errors;
     }
+
 }

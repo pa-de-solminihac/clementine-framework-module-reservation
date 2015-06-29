@@ -1,7 +1,7 @@
 <?php
 $this->getParentBlock($data, $request);
 if ($request->ACT == "update") {
-    if (clementine::$config['module_fullcalendar']['lang'] == "fr") {
+    if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
 ?>
             <h1 class="titre_page">
                 Modification d'une horaire
@@ -15,7 +15,7 @@ if ($request->ACT == "update") {
 <?php
     }
 } else {
-    if (clementine::$config['module_fullcalendar']['lang'] == "fr") {
+    if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
 ?>
             <h1 class="titre_page">
                 Gestion des horaires

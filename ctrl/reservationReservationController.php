@@ -2,32 +2,6 @@
 class reservationReservationController extends reservationReservationController_Parent
 {
     /**
-     *  tryAccess : tryAccess permet d'empêcher l'accès à une page dont il n'a pas les droits.
-     *  Cette accès sera stopé et il y aura une erreur de type 403
-     *
-     *  @param $privileges de la forme array('visualiser_stats' => true); pour un seul privileges sinon ce referer à la fonction
-     *          needPrivilege du fichier usersUsersModel.php ligne 227
-     *  @access public
-     *  @return void
-     *
-     */
-    public function tryAccess($privileges)
-    {
-        $usr_mdl = $this->getModel('users');
-        $module_name = $this->getCurrentModule();
-        $err = $this->getHelper('errors');
-        if (!$usr_mdl->hasPrivilege($privileges)) {
-            $err->register_err('failed_privileges', 'login_error_privileges', Clementine::$config['module_site']['login_error_privileges'], $module_name);
-        }
-        $auth_errors = $err->get($module_name, 'failed_privileges');
-        if ($auth_errors) {
-            $this->data['errors'] = $auth_errors;
-            $this->data['message'] = implode('<br />', $auth_errors);
-            header('HTTP/1.0 403 Unauthorized');
-            die();
-        }
-    }
-    /**
      *  profilAction : ProfilAction s'occupe de la page profil pour les personnes connecté
      *
      *  @access public
@@ -50,11 +24,13 @@ class reservationReservationController extends reservationReservationController_
             die();
         }
     }
+
     public function choixplanningAction($request, $params = null)
     {
         $ressource_mdl = $this->getModel('ressource');
         $this->data['list_total_ressource'] = $ressource_mdl->getListRessource();
     }
+
     /**
      *  rename_fields : Renomme la totalité des champs
      *
@@ -65,7 +41,7 @@ class reservationReservationController extends reservationReservationController_
     public function rename_fields($request, $params = null)
     {
         $ret = parent::rename_fields($request, $params);
-        $lang = clementine::$config['module_fullcalendar']['lang'];
+        $lang = Clementine::$config['module_fullcalendar']['lang'];
         if ($lang == 'fr') {
             $this->mapFieldName('clementine_reservation_ressource_has_reservation.ressource_id', 'Ressource');
             $this->mapFieldName('clementine_reservation_users.name', 'Nom');
@@ -94,6 +70,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return $ret;
     }
+
     /**
      *  deleteAction : Personnalise la suppression des reservation. On met seulement un champ à 1 pour par la suite
      *                 les traiter dans les statistiques
@@ -109,11 +86,11 @@ class reservationReservationController extends reservationReservationController_
             $params['url_retour'] = __WWW__ . '/reservation/calendar';
         }
         if ($request->POST) {
-            if (isset($request->GET['send']) && $request->GET['send'] == "true") {
+            if ($request->get('string', 'send') == 'true') {
                 $this->data['send'] = true;
             }
-            if (clementine::$config['mail']['send'] >= 0) {
-                $this->notification($id_reservation, $request->POST['raison']);
+            if (Clementine::$config['mail']['send'] >= 0) {
+                $this->notification($id_reservation, $request->post('string', 'raison'));
             }
             $db = $this->getModel('db');
             $sql = "UPDATE clementine_reservation SET cancel = 1 WHERE id = $id_reservation";
@@ -122,6 +99,7 @@ class reservationReservationController extends reservationReservationController_
             $this->getModel('fonctions')->redirect($params['url_retour']);
         }
     }
+
     /**
      *  notification : Controle le faites que l'on puisse bien envoyé un mail
      *
@@ -135,6 +113,7 @@ class reservationReservationController extends reservationReservationController_
             $this->mail_modif($id_reservation, $raison);
         }
     }
+
     /**
      *  mail_modif : Prépare la totalité du mail et l'envoie
      *
@@ -155,6 +134,7 @@ class reservationReservationController extends reservationReservationController_
             'message_html' => $mail,
         ));
     }
+
     /**
      *  allAction : allAction s'occupe de la page profil pour les personnes connecté
      *
@@ -177,7 +157,6 @@ class reservationReservationController extends reservationReservationController_
         $ressource_mdl = $this->getModel('ressource');
         $fullcalendar_mdl = $this->getModel('fullcalendarresa');
         $fullcalendar_ctrl = $this->getController('fullcalendarresa');
-
         $horaire_mdl = $this->getModel('horaire');
         $nb_max = $horaire_mdl->getNumberPlaceMaxHoraireBetweenDate($this->data['start_date_load'], $this->data['end_date_load'], $this->data['id_ressource']);
         $number_max_reserv = $ressource_mdl->getMaximumNumberPlace($this->data['id_ressource']);
@@ -191,11 +170,9 @@ class reservationReservationController extends reservationReservationController_
         } else {
             $this->data['nb_recherche'] = 1;
         }
-
         $this->data['h_active'] = false;
         $this->data['list_total_id'] = $ressource_mdl->returnAllIdRessource();
         $this->data['all_libelle'] = $ressource_mdl->getToutLibelle();
-
         $size_tab_ressource = count($this->data['list_total_id']);
         for ($i = 0; $i < $size_tab_ressource; ++$i) {
             $matrice_valeur[$i][0] = $this->data['list_total_id'][$i];
@@ -206,7 +183,6 @@ class reservationReservationController extends reservationReservationController_
             $matrice_valeur[$i][3] = $this->data['plage_horraire'];
             $matrice_valeur[$i][5] = $fullcalendar_mdl->getTotalHorraireResa($this->data['list_total_id'][$i], false, $this->data['h_active'], $this->data['start_date_load'], $this->data['end_date_load']);
             $this->data['plage_horraire_util'] = $fullcalendar_ctrl->createCalendarUtilisateur($this->data['plage_horraire'], $this->data['list_total_id'][$i], null, $this->data['start_date_load'], $this->data['end_date_load'], $this->data['plage_horraire_horraire'], $matrice_valeur[$i][5], $this->data['nb_recherche']);
-
             $matrice_valeur[$i][4] = $this->data['plage_horraire_util'];
         }
         $this->data['list_total_ressource'] = $ressource_mdl->getListRessource();
@@ -215,8 +191,8 @@ class reservationReservationController extends reservationReservationController_
         $timeline = $fullcalendar_ctrl->createTimeline($this->data['matrice_valeur']);
         $this->data['timeline_ressource'] = $timeline['ressource'];
         $this->data['timeline_resa'] = $timeline['resa'];
-
     }
+
     /**
      *  calendarCreation : Initialise la totalité de la page avec le libelle, le nombre de personne etc.
      *
@@ -252,7 +228,6 @@ class reservationReservationController extends reservationReservationController_
                 $this->data['id_ressource'] = $reservation_mdl->getFirstIdRessource();
             }
             $horaire_mdl = $this->getModel('horaire');
-
             $nb_max = $horaire_mdl->getNumberPlaceMaxHoraireBetweenDate($this->data['start_date_load'], $this->data['end_date_load'], $this->data['id_ressource']);
             $number_max_reserv = $ressource_mdl->getMaximumNumberPlace($this->data['id_ressource']);
             if (!empty($nb_max) && $number_max_reserv != $nb_max) {
@@ -275,15 +250,15 @@ class reservationReservationController extends reservationReservationController_
                 S'il choisit qu'une seul ressources seul $this->data['id_ressource'] prend pour valeur l'id_ressource séléctionné.
                 S'il choisit toutes les ressources $this->data['choixRess'] prend pour valeur -1 et il y a donc création $matriceValeur qui prendra tout les parametres ( id_ressource , Libelle et horraires ) de toutes les ressources.
                 Sinon prend par defaut la première ressources.
-
             */
             $fullcalendar_mdl = $this->getModel('fullcalendarresa');
             $fullcalendar_ctrl = $this->getController('fullcalendarresa');
             $ressource_mdl = $this->getModel('ressource');
-            if ($request->get('int', 'clementine_reservation_ressource-id') > 0) {
-                $this->data['id_ressource'] = $request->GET['clementine_reservation_ressource-id'];
-            } else if ($request->get('int', 'clementine_reservation_ressource-id') == - 1) {
-                $this->data['id_ressource'] = $request->GET['clementine_reservation_ressource-id'];
+            $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+            if ($id_ressource > 0) {
+                $this->data['id_ressource'] = $id_ressource;
+            } else if ($id_ressource == - 1) {
+                $this->data['id_ressource'] = $id_ressource;
                 $this->data['list_total_id'] = $ressource_mdl->returnAllIdRessource();
                 $this->data['all_libelle'] = $ressource_mdl->getToutLibelle();
                 $size_tab_ressource = count($this->data['list_total_id']);
@@ -310,6 +285,7 @@ class reservationReservationController extends reservationReservationController_
             $this->data['libelle'] = $ressource_mdl->getLibelle($this->data['id_ressource']);
         }
     }
+
     /**
      *  calendarAction : Charge la page calendar, Rajoute le css, et bien sur crée le calendrier
      *
@@ -319,16 +295,16 @@ class reservationReservationController extends reservationReservationController_
     public function calendarAction($request, $params = null)
     {
         if ($request->POST) {
-            $this->data['id_ressource'] = $request->POST['ressource'];
-            $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->POST['ressource']);
+            $this->data['id_ressource'] = $request->post('int', 'ressource');
+            $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->post('int', 'ressource'));
         } else if ($request->get('int', 'clementine_reservation_ressource-id') > 0) {
-            $this->data['id_ressource'] = $request->GET['clementine_reservation_ressource-id'];
+            $this->data['id_ressource'] = $request->get('int', 'clementine_reservation_ressource-id');
         } else if ($request->get('int', 'id_ressource') > 0) {
-            $this->data['id_ressource'] = $request->GET['id_ressource'];
+            $this->data['id_ressource'] = $request->get('int', 'id_ressource');
         }
         $this->calendarCreation($request, $params);
-        return parent::calendarAction($request, $params);
     }
+
     /**
      *  indexAction : S'occupe de la liste des réservation
      *
@@ -342,15 +318,15 @@ class reservationReservationController extends reservationReservationController_
         } else {
             $params['where'] .= ' AND clementine_reservation.cancel = 0';
         }
-        if (isset($request->GET['start_date']) && isset($request->GET['end_date'])) {
-            $params['where'].= ' AND clementine_reservation.start_date = "' . $request->GET['start_date'] . '" AND clementine_reservation.end_date="' . $request->GET['end_date'] . '"';
+        if ($start_date = $request->get('string', 'start_date') && $end_date = $request->get('string', 'end_date')) {
+            $params['where'].= ' AND clementine_reservation.start_date = "' . $start_date . '" AND clementine_reservation.end_date="' . $end_date . '"';
         }
-        $privileges = array(
-            'clementine_reservation_list_reservation' => true
-        );
-        $this->tryAccess($privileges);
+        $this->getModel('users')->needPrivilege(array(
+            'clementine_reservation_list_reservation' => true,
+        ));
         return parent::indexAction($request, $params);
     }
+
     /**
      * ressourceInBD : vérifie dans le tableau $$ressource_client si
      * la ressource accedé fais bien partis d'une ressource du client.
@@ -368,6 +344,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return false;
     }
+
     /**
      * hide_fields_index : Cache les champs dans la vue index
      *
@@ -391,6 +368,7 @@ class reservationReservationController extends reservationReservationController_
         $this->unhideField('clementine_reservation_ressource.libelle');
         return $ret;
     }
+
     /**
      * override_url : Surcharge l'url de différents buttons
      *
@@ -404,11 +382,12 @@ class reservationReservationController extends reservationReservationController_
         $this->overrideUrlButton('back', __WWW__ . '/reservation/calendar');
         $this->overrideUrlButton('create', __WWW__ . '/reservation/calendar');
         $this->overrideUrlRow(__WWW__ . '/reservation/update?');
-        if (isset($request->GET['is_iframe']) && $request->ACT == 'update') {
-            $this->overrideUrlButton('del', __WWW__ . '/reservation/delete?clementine_reservation_ressource-id=' . $request->GET['clementine_reservation_ressource-id'] . '&clementine_reservation-id=' . $request->GET['clementine_reservation-id'] . '&is_iframe=1');
+        if ($request->get('int', 'is_iframe') && $request->ACT == 'update') {
+            $this->overrideUrlButton('del', __WWW__ . '/reservation/delete?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id') . '&clementine_reservation-id=' . $request->get('int', 'clementine_reservation-id') . '&is_iframe=1');
         }
         return $ret;
     }
+
     /**
      * createAction : S'occupe de toute la partie création de réservation
      *
@@ -420,13 +399,14 @@ class reservationReservationController extends reservationReservationController_
         $this->data['id_ressource_create'] = $request->get('int', 'clementine_reservation_ressource-id');
         $fullcalendar_ctrl = $this->getController('fullcalendarresa');
         $fullcalendar_mdl = $this->getModel('fullcalendarresa');
-        $id_ressource = $request->GET['clementine_reservation_ressource-id'];
-        list($day, $hour) = explode('_', $request->GET['start_date']);
+        $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+        list($day, $hour) = explode('_', $request->get('string', 'start_date'));
         list($year, $month, $days) = explode('-', $day);
         $next_day = date("Y-m-d", mktime(0, 0, 0, $month, $days + 1, $year));
         $this->data['list_creneaux'] = $fullcalendar_ctrl->getListCreneauxParJour($day, $fullcalendar_mdl->getListCreneauxPossible($id_ressource, $day, $next_day, $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $day, $next_day)));
         return parent::createAction($request, $params);
     }
+
     /**
      * mailAction : Une page appelé par une requete AJAX, pour savoir si l'on doit envoyé un mail ou non
      *
@@ -436,10 +416,11 @@ class reservationReservationController extends reservationReservationController_
     public function mailAction($request, $params = null)
     {
         $this->data['send'] = false;
-        if ($request->POST['ok'] == true) {
+        if ($request->post('int', 'ok')) {
             $this->data['send'] = true;
         }
     }
+
     /**
      * updateAction : S'occupe de la vue update, pour plus d'explication se reporter aux docblock de crud
      *
@@ -452,11 +433,9 @@ class reservationReservationController extends reservationReservationController_
         if (!isset($params['url_retour']) || empty($params['url_retour'])) {
             $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
         }
-
-        if (isset($request->GET['start_date'])) {
+        if ($start_date = $request->get('string', 'start_date')) {
             $this->data['id_ressource_create'] = $request->get('int', 'clementine_reservation_ressource-id');
             $this->data['id_reservation'] = $request->get('int', 'clementine_reservation-id');
-            $start_date = $request->get('string', 'start_date');
             list($annee, $mois, $jour) = explode('-', $start_date);
             list($jour, $heur) = explode('_', $jour);
             $jours = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
@@ -471,6 +450,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return parent::updateAction($request, $params);
     }
+
     /**
      * hide_fields : cache les champs désirés
      *
@@ -487,6 +467,7 @@ class reservationReservationController extends reservationReservationController_
         $this->hideField('clementine_reservation.information_id');
         return $ret;
     }
+
     /**
      * move_fields : Met les champs à leur places voulus
      *
@@ -501,6 +482,7 @@ class reservationReservationController extends reservationReservationController_
         $this->moveField('clementine_reservation_users.mail', 'clementine_reservation.comment');
         return $ret;
     }
+
     /**
      * alter_values_create_or_update : Change différentes valeur à l'affichage, pour plus d'explication ce reportée
      *                                 aux docs block de crud
@@ -517,6 +499,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return $ret;
     }
+
     /**
      * add_fields_create_or_update : Ajoute différents champs dans les vues create or update de reservation
      *
@@ -532,11 +515,9 @@ class reservationReservationController extends reservationReservationController_
         $ressource_mdl = $this->getModel('ressource');
         $horaire_mdl = $this->getModel('horaire');
         $id_ressource = 0;
-        if (isset($request->GET['start_date'])) {
-            $start_date = $request->get('string', 'start_date');
+        if ($start_date = $request->get('string', 'start_date')) {
             $id_ressource = $request->get('int', 'ressource_id_ressource');
-        } elseif (isset($request->GET['clementine_reservation-id'])) {
-            $id_reservation = $request->GET['clementine_reservation-id'];
+        } elseif ($id_reservation = $request->get('int', 'clementine_reservation-id')) {
             foreach ($this->data['other_value'] as $key => $value) {
                 list($ressource_id, $ressource_has_reservation_reservation_id, $id_ressource, $id_reservation2, $user_id) = explode('&', $key);
                 list($name, $id_reservation2) = explode('=', $id_reservation2);
@@ -565,10 +546,9 @@ class reservationReservationController extends reservationReservationController_
         $end_date = $fullcalendar_helper->secondToTime($fullcalendar_helper->timeToSecond($hour) + $fullcalendar_helper->timeToSecond($creneaux));
         $total = $fullcalendar_ctrl->getListCreneauxParJour($day, $fullcalendar_mdl->getListCreneauxPossible($this->data['id_ressource_create'], $day, $next_day, $fullcalendar_mdl->getTotalHorraireResa($this->data['id_ressource_create'], false, false, $day, $next_day)));
         $user = $this->getModel('users');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
-        $admin = $user->hasPrivilege($privileges);
+        $admin = $user->hasPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         if ($admin) {
             $tabHor = $fullcalendar_ctrl->getListCreneauxParJour($day, $fullcalendar_mdl->getListCreneauxPossible($this->data['id_ressource_create'], $day, $next_day, $fullcalendar_mdl->getTotalHorraireResa($this->data['id_ressource_create'], false, false, $day, $next_day)));
         }
@@ -578,18 +558,15 @@ class reservationReservationController extends reservationReservationController_
         $total = array_unique($total, SORT_REGULAR);
         $reservation_mdl = $this->getModel('reservation');
         $nbPlaceMax = $ressource_mdl->getMaximumNumberPlace($this->data['id_ressource_create']);
-
         $nb_place_max_horaire = $horaire_mdl->getAllNumberPlaceHoraireBetweenDate($day, $next_day, $id_ressource);
         if ($this->data['formtype'] == 'update') {
             $total = array_values(array_filter($total));
             $incr = 0;
             foreach ($total as $tab_total) {
-
                 if (strpos($tab_total, '-') == false) {
                     $total[$incr] = '';
                 }
                 ++$incr;
-
             }
             sort($total, SORT_REGULAR);
             $total = array_values(array_filter($total));
@@ -605,12 +582,10 @@ class reservationReservationController extends reservationReservationController_
             $total = array_values(array_filter($total));
             $incr = 0;
             foreach ($total as $tab_total) {
-
                 if (strpos($tab_total, '-') == false) {
                     $total[$incr] = '';
                 }
                 ++$incr;
-
             }
             sort($total, SORT_REGULAR);
             $total = array_values(array_filter($total));
@@ -658,6 +633,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return $ret;
     }
+
     /**
      * override_fields_create_or_update : Surcharge les champs dans les vues create or update,
      *                                    Plus d'explication dans le docBlock de crud
@@ -700,7 +676,6 @@ class reservationReservationController extends reservationReservationController_
                 'type' => 'textarea',
             ));
         }
-
         $this->setMandatoryField('clementine_reservation.number_people');
         /*
                 Vérifie si l'utilisateur est connécté ou non.
@@ -713,10 +688,9 @@ class reservationReservationController extends reservationReservationController_
         $user = $this->getModel('users');
         $auth = $user->getAuth();
         $creation = $this->getModel('reservation');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
-        $admin = $user->hasPrivilege($privileges);
+        $admin = $user->hasPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         if ($auth != false && !$admin) {
             if ($creation->testUser($auth['id'])) {
                 $this->overrideField('clementine_reservation_users.name', array(
@@ -736,6 +710,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return $ret;
     }
+
     /**
      *  alter_post : fonction permettant de convertir le créneaux séléctioné
      *               en start_date et end_date attendu pour l'insertion dans la base de données.
@@ -752,8 +727,7 @@ class reservationReservationController extends reservationReservationController_
         $fullcalendar_ctrl = $this->getController('fullcalendarresa');
         $start_date;
         $id_ressource;
-        if (isset($request->GET['clementine_reservation-id'])) {
-            $id_reservation = $request->get('int', 'clementine_reservation-id');
+        if ($id_reservation = $request->get('int', 'clementine_reservation-id')) {
             foreach ($this->data['other_value'] as $key => $value) {
                 list($ressource_id, $ressource_has_reservation_reservation_id, $id_ressource, $id_reservation2, $user_id) = explode('&', $key);
                 list($name, $id_reservation2) = explode('=', $id_reservation2);
@@ -768,8 +742,8 @@ class reservationReservationController extends reservationReservationController_
             $this->data['id_reservation'] = $id_reservation;
         }
         if (!isset($start_date)) {
-            $start_date = $request->GET['start_date'];
-            $this->data['id_reservation'] = $request->GET['clementine_reservation_ressource-id'];
+            $start_date = $request->get('string', 'start_date');
+            $this->data['id_reservation'] = $request->get('int', 'clementine_reservation_ressource-id');
         }
         list($day, $hour) = explode('_', $start_date);
         list($year, $month, $days) = explode('-', $day);
@@ -789,14 +763,12 @@ class reservationReservationController extends reservationReservationController_
         sort($tab_hor, SORT_REGULAR);
         $tab_hor = array_values(array_filter($tab_hor));
         $user = $this->getModel('users');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
         $ressource_mdl = $this->getModel('ressource');
         $creneaux = $ressource_mdl->getCreneaux($this->data['id_ressource_create']);
         $end_date = $fullcalendar_helper->secondToTime($fullcalendar_helper->timeToSecond($hour) + $fullcalendar_helper->timeToSecond($creneaux));
-        $admin = $user->hasPrivilege($privileges);
-
+        $admin = $user->hasPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         list($start_hour, $end_hour) = explode('-', $tab_hor[$result]);
         $start_date = $day . ' ' . trim($start_hour);
         $end_date = $day . ' ' . $end_hour;
@@ -807,10 +779,9 @@ class reservationReservationController extends reservationReservationController_
         $user = $this->getModel('users');
         $auth = $user->getAuth();
         $creation = $this->getModel('reservation');
-        $privileges = array(
-            'clementine_reservation_gerer_reservation' => true
-        );
-        $admin = $user->hasPrivilege($privileges);
+        $admin = $user->hasPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
         if ($auth != false && !$admin) {
             if ($creation->testUser($auth['id'])) {
                 $insecure_array['clementine_reservation-user_id'] = $creation->getIdUser($auth['id']);
@@ -818,12 +789,12 @@ class reservationReservationController extends reservationReservationController_
                 $insecure_array['clementine_reservation_users-clementine_users_id'] = $auth['id'];
             }
         }
-
         if ($this->data['formtype'] == 'update' && Clementine::$config['mail']['send'] >= 0) {
             $this->notification($this->data['id_reservation'], $insecure_array['raison']);
         }
         return $insecure_array;
     }
+
     /**
      *  validate :  Fonction qui vérifie si le créneaux séléctioné est bien disponible
      *              et si le nombre NbPersonne n'est pas supérieur au nombre de places réstantes
@@ -851,7 +822,6 @@ class reservationReservationController extends reservationReservationController_
         if (!empty($number_place_max_horaire) && $number_place_max_horaire != $number_place_max_reserv) {
             $number_place_max_reserv = $number_place_max_horaire;
         }
-
         $list_horaire_util = $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $day, $next_day);
         $plage_horaire_horaire = $fullcalendar_mdl->getListCreneauxPossible($id_ressource, $day, $next_day, $list_horaire_util);
         $plage_horraire = $fullcalendar_mdl->getListCreneauxSansResa($id_ressource, $plage_horaire_horaire, $day, $next_day);
@@ -860,7 +830,6 @@ class reservationReservationController extends reservationReservationController_
         $plage_horraire_util = $fullcalendar_ctrl->createCalendarUtilisateur($plage_horraire, $id_ressource, null, $day, $next_day, $plage_horaire_horaire, $list_horaire_util, $nb_recherche);
         $number_place_take = $reservation_mdl->getNbPlaceprise($insecure_values['clementine_reservation-start_date'], $insecure_values['clementine_reservation-end_date'], $id_ressource);
         $verif_possible_creneaux = $fullcalendar_ctrl->verifDatePossible($insecure_values['clementine_reservation-start_date'], $insecure_values['clementine_reservation-end_date'], $plage_horraire_util);
-
         $number_place_max = $ressource_mdl->getMaximumNumberPlace($id_ressource);
         $number_place_remainder = $number_place_max - $number_place_take;
         $number_place_take_by_reservation = $reservation_mdl->getNbPlaceByIdReservation($request->get('int', 'clementine_reservation-id'));
@@ -886,6 +855,7 @@ class reservationReservationController extends reservationReservationController_
         }
         return $my_errors;
     }
+
     /**
      * blockAction : controlleur permettant de bloquer une réservation
      *
@@ -895,14 +865,15 @@ class reservationReservationController extends reservationReservationController_
     public function blockAction($request, $params = null)
     {
         if ($request->POST) {
-            $clementine_reservation_ressource_id = $request->GET['clementine_reservation_ressource-id'];
-            $start_date = $request->GET['start_date'];
-            $commentaire = $request->POST['commentaire'];
+            $clementine_reservation_ressource_id = $request->get('int', 'clementine_reservation_ressource-id');
+            $start_date = $request->get('string', 'start_date');
+            $commentaire = $request->post('string', 'commentaire');
             $horaire_mdl = $this->getModel('horaire');
             $horaire_mdl->createHoraireSuppr($clementine_reservation_ressource_id, $start_date, $commentaire);
             $this->getModel('fonctions')->redirect(__WWW__ . '/reservation/calendar');
         }
     }
+
     /**
      * numberpeopleAction : Est appelé par une requête AJAX et traite les données envoyé par l'input du nombre de personne
      *
@@ -912,37 +883,36 @@ class reservationReservationController extends reservationReservationController_
     public function numberpeopleAction($request, $params = null)
     {
         if ($request->POST) {
-            $start_date = $request->POST['start_date'];
-            $test_date = new DateTime($request->POST['end_date']);
+            $start_date = $request->post('string', 'start_date');
+            $test_date = new DateTime($request->post('string', 'end_date'));
             $end_date = date('Y-m-d', date_timestamp_get($test_date));
-            $id_ressource = $request->POST['id_ressource'];
-
+            $id_ressource = $request->post('int', 'id_ressource');
             $horaire_mdl = $this->getModel('horaire');
             $ressource_mdl = $this->getModel('ressource');
             $fullcalendar_mdl = $this->getModel('fullcalendarresa');
             $number_max = 0;
             $number_max = $horaire_mdl->getNumberPlaceMaxHoraireBetweenDate($start_date, $end_date, $id_ressource);
             $number_max_reserv = $ressource_mdl->getNbPlaceMax($id_ressource);
-
             if (!empty($number_max) && $number_max != $number_max_reserv) {
                 $number_max_reserv = $number_max;
             }
             $this->data['number_max'] = $number_max_reserv;
         }
     }
+
     /**
      * choixAction : Controlleur permettant de choisir entre une réservation connecté et une non connecté
-     *               N'est appelé uniquement si clementine::$config['module_reservation']['force'] == 0
+     *               N'est appelé uniquement si Clementine::$config['module_reservation']['force'] == 0
      *
      * @access public
      * @return bool
      */
     public function choixAction($request, $params = null)
     {
-
     }
+
     public function calendar_cssAction($request, $params = null)
     {
-
     }
+
 }

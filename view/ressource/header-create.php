@@ -1,6 +1,6 @@
 <?php
 $this->getParentBlock($data, $request);
-if (clementine::$config['module_fullcalendar']['lang'] == "fr") {
+if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
 ?>
         <h1 class="titre_page">
             Création d'une ressource 
