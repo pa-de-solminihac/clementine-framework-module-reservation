@@ -1,6 +1,6 @@
 <?php
 $users = $this->getModel('users');
-$lang = Clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_reservation']['lang'];
 if ($data['id_ressource'] != 0) {
     // Affiche le nombre de personnes le calendrier etc au premier appel
     if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections']['header'])) {

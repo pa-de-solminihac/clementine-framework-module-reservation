@@ -8,7 +8,7 @@ $id_ressource = $request->get('int', 'id_ressource');
 if ($ressource_id || $id_ressource) {
     $this->getParentBlock($data, $request);
 } else if ($user->hasPrivilege($privileges)) {
-    $lang = Clementine::$config['module_fullcalendar']['lang'];
+    $lang = Clementine::$config['module_reservation']['lang'];
     $this->getBlock('reservation/header', $data, $request);
     if ($lang == "fr") {
 ?>

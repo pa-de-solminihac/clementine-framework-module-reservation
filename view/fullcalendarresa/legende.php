@@ -1,8 +1,8 @@
 <?php
-$dispo = Clementine::$config['module_fullcalendar']['dispo'];
-$incomplet = Clementine::$config['module_fullcalendar']['incomplet'];
-$full = Clementine::$config['module_fullcalendar']['complet'];
-$lang = Clementine::$config['module_fullcalendar']['lang'];
+$dispo = Clementine::$config['module_reservation']['dispo'];
+$incomplet = Clementine::$config['module_reservation']['incomplet'];
+$full = Clementine::$config['module_reservation']['complet'];
+$lang = Clementine::$config['module_reservation']['lang'];
 if ($lang == 'fr') {
     $title_dispo = 'Dispo';
     $title_incomplet = 'Occupé';

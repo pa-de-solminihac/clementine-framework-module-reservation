@@ -1,6 +1,6 @@
 <?php
 $this->getParentBlock($data, $request);
-if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
+if (Clementine::$config['module_reservation']['lang'] == "fr") {
 ?>
         <h1 class="titre_page">
             Création d'une réservation 

@@ -11,16 +11,16 @@ if (!$data['id_ressource']) {
 }
 $ressource_title = 'Gérer les ressources';
 // Pour faciliter l'affichage si config il y a on affiche gerer la seule ressource qui est dans le config.ini
-if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
-    $ressource_title = "Gérer les " . Clementine::$config['module_fullcalendar']['ressource'] . 's';
+if (!empty(Clementine::$config['module_reservation']['ressource'])) {
+    $ressource_title = "Gérer les " . Clementine::$config['module_reservation']['ressource'] . 's';
 }
 $menus = array(
     $ressource_title,
 );
-if (Clementine::$config['module_fullcalendar']['lang'] == 'en') {
+if (Clementine::$config['module_reservation']['lang'] == 'en') {
     $ressource_title = 'Managing resources';
-    if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
-        $ressource_title = 'Manage ' . Clementine::$config['module_fullcalendar']['ressource'] . 's';
+    if (!empty(Clementine::$config['module_reservation']['ressource'])) {
+        $ressource_title = 'Manage ' . Clementine::$config['module_reservation']['ressource'] . 's';
     }
     $menus = array(
         $ressource_title,

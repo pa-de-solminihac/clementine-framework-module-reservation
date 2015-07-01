@@ -11,10 +11,10 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
      */
     public function createCalendarUtilisateur($horraire_dispo, $id_ressource, $params = null, $start_date_load, $end_date_load, $list_creneaux, $tab_horaire, $nb_recherche)
     {
-        $lang = Clementine::$config['module_fullcalendar']['lang'];
-        $dispo = Clementine::$config['module_fullcalendar']['dispo'];
-        $incomplet = Clementine::$config['module_fullcalendar']['incomplet'];
-        $full = Clementine::$config['module_fullcalendar']['complet'];
+        $lang = Clementine::$config['module_reservation']['lang'];
+        $dispo = Clementine::$config['module_reservation']['dispo'];
+        $incomplet = Clementine::$config['module_reservation']['incomplet'];
+        $full = Clementine::$config['module_reservation']['complet'];
         if (isset($params['color']['dispo'])) {
             $dispo = $params['color']['dispo'];
         } elseif (isset($params['color']['incomplet'])) {
@@ -25,7 +25,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         if (isset($params['number_max_print_col'])) {
             $number_max_print_col = $params['number_max_print_col'];
         } else {
-            $number_max_print_col = Clementine::$config['module_fullcalendar']['number_max_print_col'];
+            $number_max_print_col = Clementine::$config['module_reservation']['number_max_print_col'];
         }
         $request = $this->getRequest();
         $reservation_mdl = $this->getModel('reservation');

@@ -27,10 +27,10 @@ input[type="date"]::-webkit-clear-button {
   display: none;
 }
 
-.fc-title {
-    position:absolute !important ; 
-    top:10px !important; 
-    left : 10px !important
+.fc-content > .fc-title {
+    position: absolute !important ; 
+    top: 10px !important; 
+    left: 10px !important
 }
 
 .fc-body table {

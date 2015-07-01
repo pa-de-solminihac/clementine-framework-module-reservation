@@ -41,7 +41,7 @@ class reservationReservationController extends reservationReservationController_
     public function rename_fields($request, $params = null)
     {
         $ret = parent::rename_fields($request, $params);
-        $lang = Clementine::$config['module_fullcalendar']['lang'];
+        $lang = Clementine::$config['module_reservation']['lang'];
         if ($lang == 'fr') {
             $this->mapFieldName('clementine_reservation_ressource_has_reservation.ressource_id', 'Ressource');
             $this->mapFieldName('clementine_reservation_users.name', 'Nom');
