@@ -321,6 +321,10 @@ class reservationReservationController extends reservationReservationController_
         if ($start_date = $request->get('string', 'start_date') && $end_date = $request->get('string', 'end_date')) {
             $params['where'].= ' AND clementine_reservation.start_date = "' . $start_date . '" AND clementine_reservation.end_date="' . $end_date . '"';
         }
+        if (isset($request->GET['clementine_reservation_ressource-id'])) {
+            $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+            $params['where'] .= ' AND clementine_reservation_ressource.id = ' . $id_ressource; 
+        }
         $this->getModel('users')->needPrivilege(array(
             'clementine_reservation_list_reservation' => true,
         ));

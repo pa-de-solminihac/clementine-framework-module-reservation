@@ -283,6 +283,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
             $this->setDefaultValue('clementine_reservation_horaire.end_date', $date_fin);
             $this->setDefaultValue('clementine_reservation_ressource.libelle', $id_ressource - 1);
         } else if ($request->get('int', 'clementine_reservation_ressource-id') > 0) {
+            $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
             $this->setDefaultValue('clementine_reservation_ressource.libelle', $id_ressource - 1);
         }
         return $ret;
