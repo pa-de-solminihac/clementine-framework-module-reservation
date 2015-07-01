@@ -385,6 +385,10 @@ class reservationReservationController extends reservationReservationController_
         $this->overrideUrlButton('updatebutton', __WWW__ . '/reservation/update?');
         $this->overrideUrlButton('back', __WWW__ . '/reservation/calendar');
         $this->overrideUrlButton('create', __WWW__ . '/reservation/calendar');
+        if (isset($request->GET['clementine_reservation_ressource-id'])) {
+            $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+            $this->overrideUrlButton('create', __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $id_ressource);
+        }
         $this->overrideUrlRow(__WWW__ . '/reservation/update?');
         if ($request->get('int', 'is_iframe') && $request->ACT == 'update') {
             $this->overrideUrlButton('del', __WWW__ . '/reservation/delete?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id') . '&clementine_reservation-id=' . $request->get('int', 'clementine_reservation-id') . '&is_iframe=1');
