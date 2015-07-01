@@ -1,7 +1,11 @@
 <?php
 $this->getParentBlock($data, $request);
 // Si c'est une vue de type créate on donne la possibilité au client de bloquer un créneaux on créé donc un bouton
-if ($data['alldata']['formtype'] == 'create') {
+$user = $this->getModel('users');
+$admin = $user->hasPrivilege(array(
+    'clementine_reservation_gerer_reservation' => true,
+));
+if ($data['alldata']['formtype'] == 'create' && $admin) {
 ?>
 <a class="clementine_crud-update-blocked clementine_crud-blockedbutton <?php
     echo implode(' ', $data['alldata']['more_classes_delbutton']); ?>"

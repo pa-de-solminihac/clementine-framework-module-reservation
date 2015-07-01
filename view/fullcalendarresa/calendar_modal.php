@@ -26,7 +26,7 @@ if ($request->ACT != "all" && $ressource_id > 0) {
                     });
                     var current = this.contentWindow.location.href;
                     var update = 0;
-                    if (current.search("reservation/update")) {
+                    if (current.search("reservation/update") != -1) {
                         update = 1;
                     }
                     var url =  $(this).attr("src");
