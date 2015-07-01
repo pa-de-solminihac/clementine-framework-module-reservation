@@ -321,9 +321,8 @@ class reservationReservationController extends reservationReservationController_
         if ($start_date = $request->get('string', 'start_date') && $end_date = $request->get('string', 'end_date')) {
             $params['where'].= ' AND clementine_reservation.start_date = "' . $start_date . '" AND clementine_reservation.end_date="' . $end_date . '"';
         }
-        if (isset($request->GET['clementine_reservation_ressource-id'])) {
-            $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
-            $params['where'] .= ' AND clementine_reservation_ressource.id = ' . $id_ressource; 
+        if ($ressource_id = $request->get('int', 'clementine_reservation_ressource-id')) {
+            $params['where'] .= ' AND clementine_reservation_ressource.id = "' . $ressource_id . '" '; 
         }
         $this->getModel('users')->needPrivilege(array(
             'clementine_reservation_list_reservation' => true,
@@ -385,8 +384,7 @@ class reservationReservationController extends reservationReservationController_
         $this->overrideUrlButton('updatebutton', __WWW__ . '/reservation/update?');
         $this->overrideUrlButton('back', __WWW__ . '/reservation/calendar');
         $this->overrideUrlButton('create', __WWW__ . '/reservation/calendar');
-        if (isset($request->GET['clementine_reservation_ressource-id'])) {
-            $id_ressource = $request->get('int', 'clementine_reservation_ressource-id');
+        if ($id_ressource = $request->get('int', 'clementine_reservation_ressource-id')) {
             $this->overrideUrlButton('create', __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $id_ressource);
         }
         $this->overrideUrlRow(__WWW__ . '/reservation/update?');
