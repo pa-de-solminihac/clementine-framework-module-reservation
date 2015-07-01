@@ -404,6 +404,9 @@ class reservationReservationController extends reservationReservationController_
         list($year, $month, $days) = explode('-', $day);
         $next_day = date("Y-m-d", mktime(0, 0, 0, $month, $days + 1, $year));
         $this->data['list_creneaux'] = $fullcalendar_ctrl->getListCreneauxParJour($day, $fullcalendar_mdl->getListCreneauxPossible($id_ressource, $day, $next_day, $fullcalendar_mdl->getTotalHorraireResa($id_ressource, false, false, $day, $next_day)));
+        if (!isset($params['url_retour']) || empty($params['url_retour'])) {
+            $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $request->get('int', 'clementine_reservation_ressource-id');
+        }
         return parent::createAction($request, $params);
     }
 
@@ -908,10 +911,6 @@ class reservationReservationController extends reservationReservationController_
      * @return bool
      */
     public function choixAction($request, $params = null)
-    {
-    }
-
-    public function calendar_cssAction($request, $params = null)
     {
     }
 

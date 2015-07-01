@@ -23,8 +23,8 @@ if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections
     $cssjs->register_foot('fullcalendarresa/js_fullcalendarall', $this->getBlockHtml('fullcalendarresa/js_fullcalendarall', $data, $request));
     $this->getBlock('fullcalendarresa/calendar_modal');
 ?>   
-    <div id="calendar" style='position:relative;' >
-        <div id='loading' style='z-index:9; position:absolute; top:0% ; left:0% ; width:100% ; height :100% ;  background-color: rgba(255,255,255,0.5);  ' > </div>
+    <div id="calendar" class="reservation_calendar_container">
+        <div class='reservation_calendar_loading'></div>
     <div>
 <?php
     $this->getBlock('reservation/footer_content', $data, $request);

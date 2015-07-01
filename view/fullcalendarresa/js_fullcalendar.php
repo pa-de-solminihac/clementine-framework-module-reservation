@@ -59,26 +59,25 @@ if(window.location.hash) {
 } else {
     var hash = "month";
 }
-var auth = <?php echo json_encode($auth); ?>; 
-var id_ressource = <?php echo json_encode($data['id_ressource']); ?>; 
-    jQuery(document).ready(function() { 
+var auth = <?php echo json_encode($auth); ?>;
+var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
+    jQuery(document).ready(function() {
         var nbPlaceMax = <?php echo json_encode($nbPlaceMax); ?> ;
         var under_file = <?php echo json_encode($under_file); ?>;
         var lang = <?php echo json_encode($lang); ?>;
         var id_ressource = <?php echo json_encode($data['id_ressource']); ?>; // Créer les variable javascript
         var confirmer = false;
-        var libelle =  <?php echo json_encode($data['libelle']); ?>;  
+        var libelle =  <?php echo json_encode($data['libelle']); ?>;
         var plage_horraire = <?php echo json_encode($data['plage_horraire']); ?>;
         var co = <?php echo json_encode($co); ?>;
         var code = <?php echo json_encode(__WWW__); ?>;
-        var h_active = <?php echo json_encode($h_active); ?>; 
+        var h_active = <?php echo json_encode($h_active); ?>;
         var cache = 0;
         var nb_avant_more = parseInt(<?php echo json_encode($nb_avant_more); ?>);
         var mois_ac = <?php echo json_encode($mois_ac); ?>;
         var choix_ress = <?php echo json_encode($this->data['choix_ress']); ?>;
         var css_url = code+'/reservation/calendar_css';
         var click ='';
-        var hash_change = false;     
         // Fonction gérant les horaires cliqués
         jQuery('#h_active').click(function() {
             view = $('#calendar'+id_ressource).fullCalendar('getView');
@@ -90,7 +89,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                     $.extend(fcOpts, {
                         defaultView: view.name,
                         defaultDate: currentDate,
-                        eventSources: code + '/reservation/' + under_file + '?id_ressource=' 
+                        eventSources: code + '/reservation/' + under_file + '?id_ressource='
                                            + id_ressource + '&h_active=' + h_active,
                     })
                 );
@@ -120,7 +119,6 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 $("#head").css("height", "200px");
             }
         });
-
         // Fonction qui détermine si une personne n'est plus en traint de taper
         ;(function($) {
             $.fn.extend({
@@ -137,7 +135,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                         $el.is(':input') && $el.on('keyup keypress', function(e) {
                             if (e.type=='keyup' && e.keyCode!=8) {
                                 return;
-                            } 
+                            }
                             if (timeoutReference) {
                                 clearTimeout(timeoutReference);
                             }
@@ -149,8 +147,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 }
             });
         })(jQuery);
-
-        $(document).click(function(event) { 
+        $(document).click(function(event) {
             var left_evt = event.pageX;
             var top_evt = event.pageY;
             var left = click.pageX;
@@ -160,7 +157,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 $('.popover').html('');
             }
         });
-        // Bloque s'occupant de l'envoie en ajax quand l'input du nombre de personne a fini d'être rentré 
+        // Bloque s'occupant de l'envoie en ajax quand l'input du nombre de personne a fini d'être rentré
         jQuery('#nb_recherche').donetyping(function(event) {
             view = $('#calendar'+id_ressource).fullCalendar('getView');
             var start = view.start.format("YYYY-MM-DD");
@@ -173,7 +170,6 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             var end_y = view.end.format("YYYY");
             var end = end_y + "-" + end_m + "-" + end_d;
             var nb_recherche = parseInt(this.value);
-            
             $.ajax({
                 method: "POST",
                 url: "numberpeople",
@@ -189,38 +185,35 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                     })
                 );
             });
-
         });
-
         //Langue pour le calendrier
         if (lang == 'fr') {
-            var buttonText = {  
+            var buttonText = {
                 today : 'Aujourd\'hui' ,
                 month : 'Mois',
                 week  : 'Semaine',
-                day   : 'Jour' 
+                day   : 'Jour'
             };
             var columnFormat = 'ddd D/M';
             var three_days = '3 jours';
         } else {
-            var buttonText = {  
+            var buttonText = {
                 today:    'today',
                 month:    'month',
                 week:     'week',
-                day:      'day' 
+                day:      'day'
             };
             var columnFormat = 'ddd M/D';
             var three_days = '3 days';
         }
-
-        var source = code + '/reservation/' + under_file 
-                    + '?id_ressource=' + id_ressource 
+        var source = code + '/reservation/' + under_file
+                    + '?id_ressource=' + id_ressource
                     + '&h_active='+h_active;
         var fcOpts = {
             buttonText : buttonText,
-            height : "auto",  
+            height : "auto",
             defaultDate : hash_date,
-            eventBackgroundColor : '#ABFFA6',
+            eventBackgroundColor : '<?php echo Clementine::$config['module_fullcalendar']['dispo']; ?>',
             eventColor : 'transparent',
             eventBorderColor : 'transparent',
             eventTextColor : '#000',
@@ -230,11 +223,9 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 jQuery('.fc-left').append("<button id='all_form' class='fc-button fc-state-default' onclick='location.href=\""+code+"/reservation/all\"'>Tous </button>");
                 if (co) {
                     jQuery('.fc-left').append("<button id='list_form' class='fc-button fc-state-default' onclick='location.href=\""+code+"/reservation\"'>Liste </button>");
-
                 } else if (auth && !co) {
                     jQuery('.fc-left').append("<button id='list_form' class='fc-button fc-state-default' onclick='location.href=\""+code+"/reservation/profil\"'>Liste </button>");
-
-                } 
+                }
             },
             columnFormat : columnFormat,
             axisFormat : 'HH:mm',
@@ -243,7 +234,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             // Affiche un gif quand il y a un chargement
             loading: function(bool) {
                 if (bool) {
-                    $('#loading').show();
+                    $('.reservation_calendar_loading').show();
                 }
             },
             // Lorsque l'on clique sur un jour nous renvoie sur la vue adéquate
@@ -257,16 +248,14 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 $('.popover').append("<input type='button' class='btn_oui' value='Voir ce jour' />");
                 $('.popover').show();
                 $('.popover').css('left', (left+10) + 'px');
-                $('.popover').css('top', (top-(theHeight/2)-10) + 'px'); 
+                $('.popover').css('top', (top-(theHeight/2)-10) + 'px');
                 jQuery('.btn_oui').click( function() {
                     jQuery('#calendar'+id_ressource).fullCalendar( 'changeView', 'agendaDay' );
                     jQuery('#calendar'+id_ressource).fullCalendar( 'gotoDate', date );
                     $('.popover').html('');
                     $('.popover').hide();
-                    
                 });
                 click = jsEvent;
-                
             },
             // Si l'on clique sur un évenement affiche la modale correspondantes
             eventRender: function (event, element) {
@@ -289,14 +278,13 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                                 }
                                 $('.popover').show();
                                 $('.popover').css('left', (left + 10) + 'px');
-                                $('.popover').css('top', (top - (theHeight / 2) - 10) + 'px'); 
+                                $('.popover').css('top', (top - (theHeight / 2) - 10) + 'px');
                                 jQuery('.reserver').click( function() {
                                     // $('.popover').html('');
                                     // $('.popover').hide();
                                     var theModal = "#videoModal",
                                     videoSRC = event.url+'&is_iframe=1',
                                     videoSRCauto = videoSRC ;
-
                                     $(theModal + ' iframe').attr('src', videoSRCauto);
                                     $(theModal + ' button.close').click(function () {
                                         $(theModal + ' iframe').attr('src', videoSRC);
@@ -307,42 +295,40 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                             });
                         }
                     }
-            },  
-                  
+            },
             // S'occupe de la langue
             lang : lang,
             //Si la souris survole le calendrier
             eventMouseover: function() {
-                            
             },
             // Si la souris quitte le calendrier
             eventMouseout: function() {
-
             },
-            eventLimit: mois_ac, 
+            eventLimit: mois_ac,
             // Configuration des vues
             views: {
-                agendaThreeDay: { 
-                    type: 'agenda', 
-                    duration: { days: 3 }, 
-                    buttonText: three_days 
-                }, 
-                month: { 
-                    eventLimit: nb_avant_more, 
+                agendaThreeDay: {
+                    type: 'agenda',
+                    duration: { days: 3 },
+                    buttonText: three_days
+                },
+                month: {
+                    eventLimit: nb_avant_more,
                 },
             },
-            header : {       
+            header : {
                 left: '',
                 center: 'prev, next' ,
-                right:  'agendaDay , agendaWeek , month , agendaThreeDay,agendaListView'
+                right:  'agendaDay , agendaThreeDay , agendaWeek , month , agendaListView'
             },
             // Ce que doivent faire les évenements après le premier rendus.
-            eventAfterRender: function(event, element, view) {  
+            eventAfterRender: function(event, element, view) {
                 // jQuery('a[style="background-color:transparent;border-color:transparent;color:#000"]').remove();
                 // jQuery('.fc-bg:empty').height(40);
                 if (view.name == 'month') {
-                    jQuery('tbody tr').css('height','100%');
-                } 
+                    jQuery('thead tr').css('height','1em');
+                    jQuery('tbody tr').css('height','1em');
+                }
                 // jQuery('.full').mouseover(function() {
                 // var date = event.start;
                 // var _this = this;
@@ -350,15 +336,12 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 // var reslicedAllSegs = _this.resliceDaySegs(allSegs, date);
                     // jQuery('#calendar'+id_ressource).showSegPopover(element,jQuery('#calendar'+id_ressource) ,reslicedAllSegs);
                 // });
-                
             },
-            defaultView : hash,  
-            eventDragStart : function( event, jsEvent, ui, view ) { 
-
+            defaultView : hash,
+            eventDragStart : function( event, jsEvent, ui, view ) {
             },
-            
             // Quand le drag s'arrete, c'est à dire qu'un évenement décolle de sa place
-            eventDragStop : function( event, jsEvent, ui, view ) { 
+            eventDragStop : function( event, jsEvent, ui, view ) {
                date_start_before = event.start.format();
                date_end_before = event.end.format();
             },
@@ -374,20 +357,20 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                         var reservation_idreservation = update[0].split("=");
                         var ressource_idressource = update[2].split("=");
                         var id_reservation1 = reservation_idreservation[1];
-                        var datas = { 
+                        var datas = {
                             id_reservation : id_reservation1,
-                            date : date1, 
+                            date : date1,
                             id_ressource : id_ressource ,
                             time_creneaux : event.time_creneaux
                         };
                     } else {
                         date_start_before = date_start_before.replace('T', ' ');
-                        var datas = { 
-                            date_start_before : date_start_before, 
+                        var datas = {
+                            date_start_before : date_start_before,
                             date : date1,
                             id_ressource : id_ressource ,
                             time_creneaux : event.time_creneaux
-                        };  
+                        };
                     }
                     $.ajax({
                         method: "POST",
@@ -402,15 +385,14 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                         }
                         if (resultat != 1) {
                             revertFunc();
-                        }               
-                    }); 
+                        }
+                    });
                 } else {
                     revertFunc();
                 }
-
             },
             allDaySlot : false,
-            eventLimitText : "autres",            
+            eventLimitText : "autres",
             displayEventEnd : true,
             snapDuration : <?php echo json_encode($creneaux); ?>,
             eventAfterAllRender: function(view) {
@@ -418,28 +400,27 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 current_Date = current_Date.format('YYYY-MM-DD');
                 if (jQuery("#dtp").length) {
                     jQuery("#dtp").remove();
-                    var htm = '<div class="container fc-state-default"  id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="form-control" id="datetimepicker" style="width:100px; background-color:transparent ;background-repeat: repeat-x;"/></div></div></div>';
+                    var htm = '<div class="container fc-state-default" id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="reservation_datetimepicker" id="datetimepicker" style="width:100px; background-color:transparent ;background-repeat: repeat-x;"/></div></div></div>';
                     jQuery('#calendar'+id_ressource+' .fc-prev-button').after(htm);
-                    jQuery(function () { 
+                    jQuery(function () {
                         $('#datetimepicker').datetimepicker({
                             defaultDate: current_Date,
                             format: 'YYYY/MM/DD',
                             widgetPositioning: { horizontal : 'left'},
-                        }); 
+                        });
                     });
                 } else {
-                    var htm = '<div class="container fc-state-default"  id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="form-control" id="datetimepicker" style="width:100px;background-color:transparent  ;background-repeat: repeat-x;"/></div></div></div>';
+                    var htm = '<div class="container fc-state-default"  id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="reservation_datetimepicker" id="datetimepicker" style="width:100px;background-color:transparent  ;background-repeat: repeat-x;"/></div></div></div>';
                     jQuery('#calendar'+id_ressource+' .fc-prev-button').after(htm);
-                    jQuery(function () { 
+                    jQuery(function () {
                         $('#datetimepicker').datetimepicker({
                             defaultDate: current_Date,
                             format: 'YYYY/MM/DD',
                             widgetPositioning: { horizontal : 'left' },
-                        }); 
+                        });
                     });
                 }
                 jQuery('#dtp').click(function () {
-
                     jQuery('#datetimepicker').on('dp.change', function(e) {
                         var date_select = new Date(e.date);
                         var jour_select = date_select.getUTCDate()+1;
@@ -448,11 +429,11 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                         }
                         var mois_select = date_select.getUTCMonth()+1;
                         if (mois_select < 10) {
-                            mois_select = '0'+mois_select; 
+                            mois_select = '0'+mois_select;
                         }
                         var annee_select = date_select.getUTCFullYear();
                         var date_select = annee_select+'/'+mois_select+'/'+jour_select;
-                        if (date_select != current_Date) { 
+                        if (date_select != current_Date) {
                             $('#calendar'+id_ressource).fullCalendar('gotoDate', e.date)
                         }
                     });
@@ -500,21 +481,15 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 var cur_date = jQuery('#calendar' + id_ressource).fullCalendar('getDate');
                 cur_date = cur_date.format('YYYY/MM/DD');
                 hashtag = hashtag + '-' + cur_date;
-                hash_change = true;
-                
-                setTimeout(function(){
-                    hash_change = false;
-                }, 100);
-                
                 var start_week = view.start.format("MMDD");
                 var end_week = view.end.format("MMDD");
                 var evenements = new Array();
                 var snap = <?php echo json_encode($creneaux); ?>;
                 var snap_base = snap;
                 var snap_sec = timeToSec(snap);
-                // Détermine 
+                // Détermine
                 for(var i in evts) {
-                    var day = evts[i].start.format("MMDD");  
+                    var day = evts[i].start.format("MMDD");
                     if (day >= start_week && day < end_week) {
                         evenements.push(evts[i]);
                         minTime = timeDiff(minTime, evts[i].start.format("HH:mm:ss"), true);
@@ -554,7 +529,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                         })
                     );
                 } else {
-                    $('#loading').hide();
+                    $('.reservation_calendar_loading').hide();
                     window.location.hash = hashtag;
                     if (co) {
                         var start = view.start.format("MM/DD/YYYY");
@@ -566,7 +541,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                         var end_m = view.end.format("MM");
                         var end_y = view.end.format("YYYY");
                         var end = end_m + '/' + end_d + '/' + end_y;
-                        var url_horaire = code + "/horaire/create?date_debut=" + start + "&date_fin=" + 
+                        var url_horaire = code + "/horaire/create?date_debut=" + start + "&date_fin=" +
                                           end + "&id_ressource=" + id_ressource;
                     }
                 }
@@ -584,13 +559,13 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 return d1.getTime(d1) - d2.getTime(d2) > 0 ? time1 : time2;
             }
         }
-        function pgcd(a, b) { // Algorithme d'Euclide  
-          while (b > 0) {   
-            var r = a % b;  
-            a = b;  
-            b = r;  
-          }   
-          return a;  
+        function pgcd(a, b) { // Algorithme d'Euclide
+          while (b > 0) {
+            var r = a % b;
+            a = b;
+            b = r;
+          }
+          return a;
         }
         function timeToSec(string) {
             var res = string.split(":");
@@ -626,7 +601,6 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             }
             return time_seconds;
         }
-        
         function secToTime(secs)  {
             secs = Math.round(secs);
             var hours = Math.floor(secs / (60 * 60));
@@ -663,14 +637,10 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                 if (String(body_class[1].trim()) == String('modal-open')) {
                     $(".close").trigger("click");
                 }
-            } else if (hash_change == false) {
-                location.reload();
-            } 
+            }
         });
-    });  
-
+    });
 </script>
-<!-- <img src='../loader2.gif' id='loading' style='z-index:9; position:fixed; top:50% ; left:50% '   alt='loading' height='30' width='200' > -->
-
+<!-- <img src='../loader2.gif' class='reservation_calendar_loading' style='z-index:9; position:fixed; top:50% ; left:50% '   alt='loading' height='30' width='200' > -->
 <div class="popover">
 </div>

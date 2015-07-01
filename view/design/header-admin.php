@@ -32,29 +32,23 @@ if ($users->hasPrivilege('clementine_reservation_gerer_reservation')) {
         'icon' => '<i class="glyphicon glyphicon-calendar"></i>',
         'badge' => '',
         'recursive_menu' => array(
-            'Ressource' => array(
+            $menus[0] => array(
                 'url' => __WWW__ . '/ressource?clementine_reservation_ressource-id=' . $data['id_ressource'],
-                'icon' => '<i class="glyphicon glyphicon-menu-right"></i>',
-                'recursive_menu' => array(
-                    $menus[0] => array(
-                        'url' => __WWW__ . '/ressource?clementine_reservation_ressource-id=' . $data['id_ressource'],
-                        'icon' => '<i class="glyphicon glyphicon-pencil"></i>',
-                    ) ,
-                ) ,
+                'icon' => '<i class="glyphicon glyphicon-pencil"></i>',
             ) ,
-        )
+        ) ,
     );
     $ressource_mdl = $this->getModel('ressource');
     $list_total_ressource = $ressource_mdl->getListRessource();
     if (!empty($list_total_ressource)) {
         foreach ($list_total_ressource as $key => $value) {
-            $sidebar['Reservations']['recursive_menu']['Ressource']['recursive_menu'][$value[1]] = array(
+            $sidebar['Reservations']['recursive_menu'][$value[1]] = array(
                 'url' => __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $value[0],
                 'icon' => '<i class="glyphicon glyphicon-menu-right"></i>'
             );
         }
     } 
-    $sidebar['Reservations']['recursive_menu']['Ressource']['recursive_menu']['Toutes les ressource'] = array(
+    $sidebar['Reservations']['recursive_menu']['Toutes les ressource'] = array(
         'url' => __WWW__ . '/reservation/all',
         'icon' => '<i class="glyphicon glyphicon-menu-right"></i>'
     );

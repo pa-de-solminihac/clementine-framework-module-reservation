@@ -372,7 +372,7 @@ SQL;
         if ($res['to_add'] == - 1) {
             $color = 'red';
         } else {
-            $color = 'grey';
+            $color = 'transparent';
         }
         $actual_day = $res['start_date'];
         $end_date = $res['end_date'];

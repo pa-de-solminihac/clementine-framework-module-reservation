@@ -208,7 +208,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
     {
         if ($request->POST) {
             $ressource_libelle = $request->post('int', 'clementine_reservation_ressource-libelle');
-            $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $ressource_libelle + 1;
+            $params['url_retour'] = __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . ($ressource_libelle + 1);
         }
         $this->getModel('users')->needPrivilege(array(
                 'clementine_reservation_gerer_reservation' => true,

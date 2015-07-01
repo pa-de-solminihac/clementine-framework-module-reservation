@@ -1,53 +1,53 @@
 .clementine_crud-blockedbutton {
-	position: fixed !important;
-	bottom: 45px;
-	z-index: 9;
+    position: fixed !important;
+    bottom: 45px;
+    z-index: 9;
 }
 
 .clementine_crud-update-blocked {
-	right: 90px;
-	background-color: #996633 !important;
+    right: 90px;
+    background-color: #996633 !important;
 }
 
 #number_people {
-	margin-top: 10px;
-	margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     float: right;
     width: 150px;
     margin-left: 7px;
 }
 
 .body-newframe {
-	height: 100%;
+    height: 100%;
 }
 
 .modal-backdrop {
-	display: none;
+    display: none;
 }
 #videoModal {
-	overflow: hidden;
-}	
+    overflow: hidden;
+}   
 
 .is-an-iframe btn {
-	top: -5px;
+    top: -5px;
 }
 
 .repeat {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 hr {
-	border: 0;
+    border: 0;
     height: 0.5px;
     background: #d2d2d2;
 }
 
 .week_radio {
-	margin-left: 10px !important;
+    margin-left: 10px !important;
 }
 
 input[name=select_week7] {
-	margin-right: 25px;
+    margin-right: 25px;
 }
 
 .titre_page {
@@ -98,16 +98,72 @@ input[name=select_week7] {
 
 #menu_calendar {
     margin-bottom: 5px;
+    overflow: hidden;
 } 
+
+body .fc-event .fc-bg {
+    opacity: 0;
+}
 
 #calendar {
     height: 100% !important;
     margin-top: 0;
 }
 
+.reservation_calendar_container {
+    position: relative;
+}
+
+.reservation_calendar_loading {
+    z-index: 9;
+    position: absolute;
+    top: 3em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.7);
+}
+
+.reservation_calendar_container .fc-row .fc-content-skeleton td,
+.reservation_calendar_container .fc-row .fc-helper-skeleton td {
+    border-color: #DDD;
+}
+
+.reservation_calendar_container .fc-content-skeleton tbody td {
+}
+
+.reservation_calendar_container .fc-event:focus {
+    text-decoration: none;
+}
+
+/*.fc-toolbar {*/
+    /*overflow: hidden;*/
+/*}*/
+
+/*.fc-toolbar .fc-right {*/
+    /*position: absolute;*/
+    /*right: 0;*/
+/*}*/
+
+.reservation_datetimepicker {
+    background: transparent;
+    border: none;
+    text-align: center;
+    height: 2em;
+}
+
+.fc .bootstrap-datetimepicker-widget {
+    z-index: 99;
+}
+
+.fc .bootstrap-datetimepicker-widget th,
+.fc .bootstrap-datetimepicker-widget td {
+    border: none;
+}
+
 #number_people_unco {
     margin-top: 10px;
-	margin-bottom: 20px;
+    margin-bottom: 20px;
     float: right;
     width: 150px;
     margin-left: 7px;

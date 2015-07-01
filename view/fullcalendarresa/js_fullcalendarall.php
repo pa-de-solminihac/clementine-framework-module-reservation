@@ -18,7 +18,7 @@ $auth = $user_mdl->getAuth();
 ?>
 <script>
 $(document).ready(function() {
-    var auth = <?php echo json_encode($auth); ?>; 
+    var auth = <?php echo json_encode($auth); ?>;
     var ressource = <?php echo json_encode($ressource); ?>;
     var code = <?php echo json_encode(__WWW__); ?>;
     var ressource_name = <?php echo json_encode($ressource_name); ?>;
@@ -26,7 +26,7 @@ $(document).ready(function() {
     var co = <?php echo json_encode($co); ?>;
     var click = '';
     // Fonction donetyping, qui détermine quand un utilisateur a finis de taper
-	var focusout = true;
+    var focusout = true;
     $("#head_button").click(function() {
         if (focusout == true) {
             focusout = false;
@@ -51,13 +51,13 @@ $(document).ready(function() {
                         if (!timeoutReference) return;
                         timeoutReference = null;
                         callback.call(el);
-                    } 
+                    }
                 return this.each(function(i, el) {
                     var $el = $(el);
                     $el.is(':input') && $el.on('keyup keypress', function(e) {
                         if (e.type=='keyup' && e.keyCode!=8) {
                             return;
-                        } 
+                        }
                         if (timeoutReference) {
                             clearTimeout(timeoutReference);
                         }
@@ -69,7 +69,7 @@ $(document).ready(function() {
             }
         });
     })(jQuery);
-    $(document).click(function(event) { 
+    $(document).click(function(event) {
         var left_evt = event.pageX;
         var top_evt = event.pageY;
         var left = click.pageX;
@@ -91,15 +91,15 @@ $(document).ready(function() {
         var end_m = view.end.format("MM");
         var end_y = view.end.format("YYYY");
         var end = end_y + "-" + end_m + "-" + end_d;
-        var nb_recherche = parseInt(this.value);            
+        var nb_recherche = parseInt(this.value);
         $.ajax({
             method: "POST",
             url: "numberpeople",
-            data: { 
-                start_date : start, 
-                end_date : end, 
-                nb_recherche : nb_recherche, 
-                id_ressource : -1 
+            data: {
+                start_date : start,
+                end_date : end,
+                nb_recherche : nb_recherche,
+                id_ressource : -1
             },
         }).done(function(nb_place_max) {
             currentDate = $('#calendar').fullCalendar('getDate');
@@ -113,7 +113,7 @@ $(document).ready(function() {
             );
         });
     });
-    var buttonText = {  
+    var buttonText = {
         day : 'Jour' ,
     };
     var fcOpts = {
@@ -134,12 +134,12 @@ $(document).ready(function() {
             timelineThreeDays: {
                 type: 'timeline',
                 duration: { days: 3 },
-                buttonText: ' 3 jours',
+                buttonText: '3 jours',
             }
         },
         loading: function(bool) {
             if (bool) {
-                $('#loading').show();
+                $('.reservation_calendar_loading').show();
             }
         },
         viewRender : function (view, element) {
@@ -170,18 +170,15 @@ $(document).ready(function() {
                 // $('.popover').append("<input type='button' class='btn_oui' value='"+date.format('DD/MM/YYYY')+"' />");
                 // $('.popover').show();
                 // $('.popover').css('left', (left+10) + 'px');
-                // $('.popover').css('top', (top-(theHeight/2)-10) + 'px'); 
+                // $('.popover').css('top', (top-(theHeight/2)-10) + 'px');
                 // jQuery('.btn_oui').click( function() {
                     // jQuery('#calendar').fullCalendar( 'changeView', 'timelineDay' );
                     // jQuery('#calendar').fullCalendar( 'gotoDate', date );
                     // $('.popover').html('');
                     // $('.popover').hide();
-                    
                 // });
                 // click = jsEvent;
-            
         // },
-       
         buttonText : buttonText,
         eventRender: function (event, element) {
             if (event.url) {
@@ -201,7 +198,7 @@ $(document).ready(function() {
                     }
                     $('.popover').show();
                     $('.popover').css('left', (left+10) + 'px');
-                    $('.popover').css('top', (top-(theHeight/2)-10) + 'px'); 
+                    $('.popover').css('top', (top-(theHeight/2)-10) + 'px');
                     jQuery('.reserver').click(function() {
                         $('.popover').html('');
                         $('.popover').hide();
@@ -217,14 +214,14 @@ $(document).ready(function() {
                     click = jsEvent;
                 });
             }
-        },  
+        },
         eventAfterAllRender: function(view) {
-            jQuery('.fc-resource-area').css('width','100px');
+            //jQuery('.fc-resource-area').css('width','200px');
             current_Date = $('#calendar').fullCalendar('getDate');
             current_Date = current_Date.format('YYYY-MM-DD');
             if (jQuery("#dtp").length) {
                 jQuery("#dtp").remove();
-                var htm = '<div class="container fc-state-default"  id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="form-control" id="datetimepicker" style="width:100px; background-color:transparent ;background-repeat: repeat-x;"/></div></div></div>';
+                var htm = '<div class="container fc-state-default" id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="reservation_datetimepicker" id="datetimepicker" style="width:100px; background-color:transparent ;background-repeat: repeat-x;"/></div></div></div>';
                 jQuery('#calendar .fc-prev-button').after(htm);
                 jQuery(function () { $('#datetimepicker').datetimepicker({
                         defaultDate: current_Date,
@@ -233,14 +230,14 @@ $(document).ready(function() {
                         });
                     });
             } else {
-                var htm = '<div class="container fc-state-default"  id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="form-control" id="datetimepicker" style="width:100px;background-color:transparent  ;background-repeat: repeat-x;"/></div></div></div>';
+                var htm = '<div class="container fc-state-default" id="dtp" style="width:130px; border-radius: 4px;"><div class="row"><div class="col-sm-6" style="width:120px;"><input type="text" class="reservation_datetimepicker" id="datetimepicker" style="width:100px;background-color:transparent  ;background-repeat: repeat-x;"/></div></div></div>';
                 jQuery('#calendar .fc-prev-button').after(htm);
-                jQuery(function () { 
+                jQuery(function () {
                     $('#datetimepicker').datetimepicker({
                         defaultDate: current_Date,
                         format: 'YYYY/MM/DD',
                         widgetPositioning: { horizontal : 'left' },
-                    }); 
+                    });
                 });
             }
             jQuery('#dtp').click(function () {
@@ -252,13 +249,13 @@ $(document).ready(function() {
                     }
                     var mois_select = date_select.getUTCMonth()+1;
                     if (mois_select < 10) {
-                        mois_select = '0'+mois_select; 
+                        mois_select = '0'+mois_select;
                     }
                     var annee_select = date_select.getUTCFullYear();
                     var date_select = annee_select+'/'+mois_select+'/'+jour_select;
-                    if (date_select != current_Date) { 
+                    if (date_select != current_Date) {
                         $('#calendar').fullCalendar('gotoDate', e.date)
-                    } 
+                    }
                 });
             });
             var evts = $('#calendar').fullCalendar('clientEvents'),
@@ -279,14 +276,14 @@ $(document).ready(function() {
             var evenements = new Array();
             var snap = <?php echo json_encode($creneaux); ?>;
             var snap_sec = timeToSec(snap);
-                // Détermine 
+            // Détermine
             for(var i in evts) {
-                var day = evts[i].start.format("MMDD");  
+                var day = evts[i].start.format("MMDD");
                 if (day >= start_week && day < end_week) {
                     evenements.push(evts[i]);
                     minTime = timeDiff(minTime, evts[i].start.format("HH:mm:ss"), true);
                     maxTime = timeDiff(maxTime, evts[i].end.format("HH:mm:ss"), false);
-                    if ( snap != evts[i].time_creneaux ) { 
+                    if ( snap != evts[i].time_creneaux ) {
                         if (typeof evts[i].time_creneaux != 'undefined') {
                             var time_sec = timeToSec(evts[i].time_creneaux);
                             if(snap_sec > time_sec) {
@@ -314,14 +311,14 @@ $(document).ready(function() {
                     })
                 );
             } else {
-                $('#loading').hide();
+                $('.reservation_calendar_loading').hide();
             }
-        }		
+        }
     };
 // Met le traitement précedent dans la div ayant pour id calendar
     jQuery('#calendar').fullCalendar(fcOpts);
     if (co) {
-        jQuery('#page-wrapper').prepend('<button id="hide" ><<</button>'),
+        //jQuery('#page-wrapper').prepend('<button id="hide" ><<</button>'),
         jQuery('#hide').css('position','absolute');
         jQuery('#hide').css('width','30px');
         jQuery('#hide').css('top','65px');
@@ -355,13 +352,13 @@ $(document).ready(function() {
     }
 });
 
-function pgcd(a, b) { // Algorithme d'Euclide 
-  while (b > 0) { 
-    var r = a % b; 
-    a = b; 
+function pgcd(a, b) { // Algorithme d'Euclide
+  while (b > 0) {
+    var r = a % b;
+    a = b;
     b = r;
-  } 
-  return a; 
+  }
+  return a;
 }
 
 function timeToSec(string) {
@@ -398,7 +395,7 @@ function timeToSec(string) {
     }
     return time_seconds;
 }
-    
+
 function secToTime(secs)  {
     secs = Math.round(secs);
     var hours = Math.floor(secs / (60 * 60));
@@ -424,7 +421,7 @@ function secToTime(secs)  {
 .fc-content {
     height : 100%;
 }
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
     #hide {
         display : none;
     }
@@ -499,39 +496,28 @@ input[type="date"]::-webkit-clear-button {
 }
 
 body {
-	margin: 0;
-	padding: 0;
-	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-	font-size: 14px;
+    margin: 0;
+    padding: 0;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size: 14px;
 }
 #top {
-	background: #eee;
-	border-bottom: 1px solid #ddd;
-	padding: 8px 10px;
-	font-size: 12px;
-	font-weight: bold;
-	font-weight: bold;
-	text-align: center;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    font-weight: bold;
+    text-align: center;
 }
 
 .fc-content {
     height: 100%;
 }
 
-.full {
-    background-color:red !important;
-}
-.occupe {
-    background-color:orange !important;
-}
-.dispo{
-    background-color:green !important;
-}
-.listeOrange {
-    background-color: orange !important;
-}
+<?php $this->getBlock('reservation/calendar_colors_css', $data, $request); ?>
 
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
     #calendar {
         margin-left : -8px !important;
         margin-right : -13px !important;

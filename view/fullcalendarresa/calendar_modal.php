@@ -1,5 +1,5 @@
 <!-- Création de la modal et code associé -->
-<a href="#" id="Modal" class="btn btn-default" data-toggle="modal" data-target="#videoModal" ></a>
+<div href="#" id="Modal" data-toggle="modal" data-target="#videoModal"></div>
 <?php
 $ressource_id = $request->get('int', 'clementine_reservation_ressource-id');
 $id_ressource = $request->get('int', 'id_ressource');
