@@ -1,12 +1,14 @@
 <?php
-$user = $this->getModel('users');
-$admin = $user->hasPrivilege(array(
-    'clementine_reservation_gerer_reservation' => true,
-)); 
-if ($admin) {
-    $this->getBlock('design/footer-admin', $data, $request);
-} else {
-    $this->getBlock('design/footer', $data, $request);
+if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections']['footer'])) {
+    $user = $this->getModel('users');
+    $admin = $user->hasPrivilege(array(
+        'clementine_reservation_gerer_reservation' => true,
+    ));
+    if ($admin) {
+        $this->getBlock('design/footer-admin', $data, $request);
+    } else {
+        $this->getBlock('design/footer', $data, $request);
+    }
 }
 // Envoie de mail si on le désire
 if (Clementine::$config['mail']['send'] == 1 && $request->ACT == 'update' && $request->CTRL == 'reservation' && !isset($data['send'])) {

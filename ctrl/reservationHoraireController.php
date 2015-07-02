@@ -401,7 +401,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
             }
             $tab_horaire_crea_deb = array();
             $tab_horaire_crea_fin = array();
-            if ($_POST['option'] == 1) {
+            if ($_POST['clementine_reservation_horaire-option'] == 1) {
                 for ($i = 1; $i < 8; ++$i) {
                     if (isset($_POST['select_week' . $i])) {
                         $val_post = $_POST['select_week' . $i];
