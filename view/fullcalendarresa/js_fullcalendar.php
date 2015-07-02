@@ -36,6 +36,12 @@ if ($mois_ac == "true") {
 } else {
     $nb_avant_more = false;
 }
+$helper = $this->getHelper('fullcalendarresa');
+// Calcul d'un créneaux pour les médias queries
+$info_taille = '00:10:00';
+if (isset($request->GET['time'])) {
+    $info_taille = $request->get('string', 'time');
+}
 ?>
 <script type="text/javascript">
 if(window.location.hash) {
@@ -325,10 +331,6 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             eventAfterRender: function(event, element, view) {
                 // jQuery('a[style="background-color:transparent;border-color:transparent;color:#000"]').remove();
                 // jQuery('.fc-bg:empty').height(40);
-                if (view.name == 'month') {
-                    jQuery('thead tr').css('height','1em');
-                    jQuery('tbody tr').css('height','1em');
-                }
                 // jQuery('.full').mouseover(function() {
                 // var date = event.start;
                 // var _this = this;
@@ -396,6 +398,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             displayEventEnd : true,
             snapDuration : <?php echo json_encode($creneaux); ?>,
             eventAfterAllRender: function(view) {
+                jQuery('thead tr').css('height','1em');
                 current_Date = $('#calendar' + id_ressource).fullCalendar('getDate');
                 current_Date = current_Date.format('YYYY-MM-DD');
                 if (jQuery("#dtp").length) {
@@ -546,6 +549,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
                     }
                 }
             }
+                        
         };
         // Charge la totalité du calendrier dans la div calendar
         jQuery('#calendar' + id_ressource).fullCalendar(fcOpts);

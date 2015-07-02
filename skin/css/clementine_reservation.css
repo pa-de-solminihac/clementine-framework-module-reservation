@@ -129,20 +129,43 @@ body .fc-event .fc-bg {
     border-color: #DDD;
 }
 
-.reservation_calendar_container .fc-content-skeleton tbody td {
-}
 
+/*.reservation_calendar_container .fc-event:hover,*/
 .reservation_calendar_container .fc-event:focus {
+    background-color: #000 !important;
     text-decoration: none;
 }
 
-/*.fc-toolbar {*/
-    /*overflow: hidden;*/
+/*.reservation_calendar_container .fc-event:hover .fc-content,*/
+.reservation_calendar_container .fc-event:focus .fc-content {
+    color: #FFF !important;
+}
+
+/*.reservation_calendar_container a.fc-more {*/
+    /*display: block;*/
+    /*height: 100% !important;*/
 /*}*/
 
-/*.fc-toolbar .fc-right {*/
+/*.reservation_calendar_container .fc-content-skeleton {*/
+    /*height: 100%;*/
+/*}*/
+
+/*.reservation_calendar_container .fc-content-skeleton td {*/
+    /*position: relative;*/
+/*}*/
+
+/*.reservation_calendar_container .fc-time-grid .fc-event,*/
+/*.reservation_calendar_container .fc-time-grid .fc-bgevent {*/
     /*position: absolute;*/
-    /*right: 0;*/
+    /*height: auto !important;*/
+/*}*/
+
+/*.reservation_calendar_container .fc-content-skeleton .fc-event-container > a.fc-event,*/
+/*.reservation_calendar_container .fc-more-popover .fc-event-container > a.fc-event {*/
+    /*display: block;*/
+    /*box-sizing: border-box;*/
+    /*margin-top: 0;*/
+    /*margin-bottom: 1px;*/
 /*}*/
 
 .reservation_datetimepicker {
