@@ -390,7 +390,7 @@ SQL;
                 $actual_day = date("Y-m-d", mktime(0, 0, 0, $mois, $jour + 1, $annee));
             }
         }
-        while ($this->_testActualDay($actual_day, $end_date, $end_date_load, $request->AJAX)) {
+        while ($this->_testActualDay($actual_day, $end_date, $start_date_load, $end_date_load, $request->AJAX)) {
             list($annee, $mois, $jour) = explode('-', $actual_day);
             $full_week_horaire = (object)array(
                 'start' => $actual_day . 'T' . $res['start_hour'],
@@ -447,7 +447,7 @@ SQL;
         return $horraire_tab;
     }
 
-    public function _testActualDay($actual_day, $end_date, $end_date_load, $is_ajax)
+    public function _testActualDay($actual_day, $end_date, $start_date_load, $end_date_load, $is_ajax)
     {
         if (!$is_ajax) {
             return ($actual_day <= $end_date && $actual_day < $end_date_load);
