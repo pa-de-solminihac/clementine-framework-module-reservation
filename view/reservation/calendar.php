@@ -32,7 +32,7 @@ if ($data['id_ressource'] != 0) {
         $this->getBlock('reservation/footer', $data, $request);
     } else {
         // Remplis le calendrier au deuxième appel
-        $this->getBlock('fullcalendarresa/interfaceUtil', $data, $request);
+        $this->getBlock('fullcalendarresa/interfaceutil', $data, $request);
     }
 } else if ($users->hasPrivilege(array(
     'clementine_reservation_gerer_reservation' => true
