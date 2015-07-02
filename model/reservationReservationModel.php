@@ -351,4 +351,16 @@ SQL;
         $fetch_all = $db->fetch_all($stmt);
         return $fetch_all[0][0];
     }
+
+    public function getMaxId()
+    {
+        $db = $this->getModel('db');
+        $sql = <<<SQL
+    SELECT max(id)
+    FROM clementine_reservation   
+SQL;
+        $stmt = $db->query($sql);
+        $fetch_all = $db->fetch_all($stmt);
+        return $fetch_all[0][0];
+    }
 }

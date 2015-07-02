@@ -506,6 +506,7 @@ class reservationReservationController extends reservationReservationController_
             $nb_recherche = $request->get('int', 'nb_recherche');
             $this->setDefaultValue('clementine_reservation.number_people', $nb_recherche);
         }
+        $this->addClass('more_classes_wrap', 'well');
         return $ret;
     }
 
@@ -857,6 +858,20 @@ class reservationReservationController extends reservationReservationController_
                 } else if ($insecure_values['clementine_reservation-number_people'] > ($number_place_remainder + $number_place_take_by_reservation)) {
                     $my_errors['number_people'] = 'Il ne reste plus que ' . $number_place_remainder . ' places pour ce créneaux';
                 }
+            }
+        }
+        $user = $this->getModel('users');
+        $auth = $user->getAuth();
+        $creation = $this->getModel('reservation');
+        $admin = $user->hasPrivilege(array(
+            'clementine_reservation_gerer_reservation' => true,
+        ));
+        if ($auth == false && !$admin) {
+            $id_resa = $reservation_mdl->getMaxId() + 1;
+            if (isset($_SESSION['resa_unco']) && !empty($_SESSION['resa_unco'])) {
+                $_SESSION['resa_unco'][$id_resa] = $insecure_values['clementine_reservation-start_date'];
+            } else {
+                $_SESSION['resa_unco'] = array($id_resa => $insecure_values['clementine_reservation-start_date']);
             }
         }
         if ($verif_possible_creneaux == false) {
