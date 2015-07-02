@@ -1,7 +1,7 @@
 <?php
+$this->getBlock('fullcalendarresa/calendar_css', $data);
 // Initialisation de toutes les variables déstinés à être utilisés dans le calendrier
 $data['info_taille'] = '00:10:00';
-$this->getBlock('fullcalendarresa/calendar_css', $data);
 $user_mdl = $this->getModel('users');
 $ressource_mdl = $this->getModel('ressource');
 $nbPlaceMax = $ressource_mdl->getMaximumNumberPlace($data['id_ressource']);
@@ -646,5 +646,3 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
     });
 </script>
 <!-- <img src='../loader2.gif' class='reservation_calendar_loading' style='z-index:9; position:fixed; top:50% ; left:50% '   alt='loading' height='30' width='200' > -->
-<div class="popover">
-</div>

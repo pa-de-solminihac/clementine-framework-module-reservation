@@ -1,4 +1,5 @@
 <?php
+$this->getBlock('fullcalendarresa/calendar_css', $data);
 // Déclaration des variables utile à la création d'un calendrier
 $ressource = $data['timeline_ressource'];
 $ressource_name = 'Ressources';
@@ -418,9 +419,6 @@ function secToTime(secs)  {
 </script>
 <style>
 
-.fc-content {
-    height : 100%;
-}
 @media (max-width: 767px) {
     #hide {
         display : none;
@@ -507,11 +505,15 @@ body {
     text-align: center;
 }
 
-.fc-content {
+.fc-scrollpane-inner > .fc-content {
     height: 100%;
 }
 
-<?php $this->getBlock('reservation/calendar_colors_css', $data, $request); ?>
+.fc-scrollpane-inner .fc-content > .fc-title {
+    top: 0 !important;
+}
+
+<?php // $this->getBlock('reservation/calendar_colors_css', $data, $request); ?>
 
 @media (max-width: 768px) {
     #calendar {
@@ -520,8 +522,3 @@ body {
     }
 }
 </style>
-<?php
-
-?>
-<div class="popover">
-</div>
