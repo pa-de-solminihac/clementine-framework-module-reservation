@@ -1,7 +1,7 @@
 <?php
 $this->getParentBlock($data, $request);
 if ($request->ACT == "update") {
-    if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
+    if (Clementine::$config['module_reservation']['lang'] == "fr") {
 ?>
             <h1 class="titre_page">
                 Modification d'une réservation 
@@ -15,7 +15,7 @@ if ($request->ACT == "update") {
 <?php
     }
 } else {
-    if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
+    if (Clementine::$config['module_reservation']['lang'] == "fr") {
 ?>
             <h1 class="titre_page">
                 Liste des reservation

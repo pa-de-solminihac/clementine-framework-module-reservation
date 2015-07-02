@@ -18,7 +18,7 @@ if (!$user_mdl->hasPrivilege($privileges)) {
 $auth = $user_mdl->getAuth();
 $data['info_taille'] = '00:40:00';
 $horraire_except_util = $data['list_horraire_util'];
-$lang = Clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_reservation']['lang'];
 $horaire_mdl = $this->getModel('horaire');
 $min_time = $horaire_mdl->getMinHoraire($data['id_ressource']);
 $max_time = $horaire_mdl->getMaxHoraire($data['id_ressource']);
@@ -30,9 +30,9 @@ if (isset($_GET['h_active'])) {
 } else {
     $h_active = false;
 }
-$mois_ac = Clementine::$config['module_fullcalendar']['mois_active'];
+$mois_ac = Clementine::$config['module_reservation']['mois_active'];
 if ($mois_ac == "true") {
-    $nb_avant_more = Clementine::$config['module_fullcalendar']['nb_avant_more'];
+    $nb_avant_more = Clementine::$config['module_reservation']['nb_avant_more'];
 } else {
     $nb_avant_more = false;
 }
@@ -222,7 +222,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             buttonText : buttonText,
             height : "auto",
             defaultDate : hash_date,
-            eventBackgroundColor : '<?php echo Clementine::$config['module_fullcalendar']['dispo']; ?>',
+            eventBackgroundColor : '<?php echo Clementine::$config['module_reservation']['dispo']; ?>',
             eventColor : 'transparent',
             eventBorderColor : 'transparent',
             eventTextColor : '#000',

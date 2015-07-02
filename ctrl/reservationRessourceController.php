@@ -77,7 +77,7 @@ class reservationRessourceController extends reservationRessourceController_Pare
     public function rename_fields($request, $params = null)
     {
         $ret = parent::rename_fields_create_or_update($request, $params);
-        if (Clementine::$config['module_fullcalendar']['lang'] == 'fr') {
+        if (Clementine::$config['module_reservation']['lang'] == 'fr') {
             $this->mapFieldName('clementine_reservation_ressource.maximum_number_place', 'Nombre de place maximum');
             $this->mapFieldName('clementine_reservation_ressource.maximum_number_place_by_reservation', 'Nombre de place maximum par réservation');
             $this->mapFieldName('clementine_reservation_ressource.time_creneaux', 'Temp par creneaux');

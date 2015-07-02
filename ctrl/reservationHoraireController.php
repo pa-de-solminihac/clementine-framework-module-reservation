@@ -102,7 +102,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
     public function override_fields_create_or_update($request, $params = null)
     {
         $ret = parent::override_fields_create_or_update($request, $params);
-        if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
+        if (Clementine::$config['module_reservation']['lang'] == "fr") {
             $add = array(
                 1 => 'Horaire normal', -1 => 'Exception suppression'
             );
@@ -185,7 +185,7 @@ class reservationHoraireController extends reservationHoraireController_Parent
      */
     public function override_fields_index($request, $params = null)
     {
-        if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
+        if (Clementine::$config['module_reservation']['lang'] == "fr") {
             $add = array(-1 => 'Exception suppression',
                 1 => 'Horaire normal',
             );
@@ -299,10 +299,10 @@ class reservationHoraireController extends reservationHoraireController_Parent
     public function rename_fields($request, $params = null)
     {
         $ret = parent::rename_fields($request, $params);
-        if (Clementine::$config['module_fullcalendar']['lang'] == "fr") {
+        if (Clementine::$config['module_reservation']['lang'] == "fr") {
             $this->mapFieldName('clementine_reservation_ressource.libelle', 'Ressource associé');
-            if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
-                $this->mapFieldName('clementine_reservation_ressource.libelle', ucfirst(Clementine::$config['module_fullcalendar']['ressource']) . ' associé');
+            if (!empty(Clementine::$config['module_reservation']['ressource'])) {
+                $this->mapFieldName('clementine_reservation_ressource.libelle', ucfirst(Clementine::$config['module_reservation']['ressource']) . ' associé');
             }
             $this->mapFieldName('clementine_reservation_horaire.start_hour', 'Heure de début de l\'exception');
             $this->mapFieldName('clementine_reservation_horaire.start_date', 'Date de début de l\'exception');
@@ -315,8 +315,8 @@ class reservationHoraireController extends reservationHoraireController_Parent
             $this->mapFieldName('clementine_reservation_horaire.time_creneaux', 'Temps par créneaux');
         } else {
             $this->mapFieldName('clementine_reservation_ressource.libelle', 'Associated resource');
-            if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
-                $this->mapFieldName('clementine_reservation_ressource.libelle', ucfirst(Clementine::$config['module_fullcalendar']['ressource']) . ' associate');
+            if (!empty(Clementine::$config['module_reservation']['ressource'])) {
+                $this->mapFieldName('clementine_reservation_ressource.libelle', ucfirst(Clementine::$config['module_reservation']['ressource']) . ' associate');
             }
             $this->mapFieldName('clementine_reservation_horaire.start_hour', 'Start except time');
             $this->mapFieldName('clementine_reservation_horaire.start_date', 'Start except date');

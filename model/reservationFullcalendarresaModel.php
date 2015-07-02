@@ -369,6 +369,7 @@ SQL;
      */
     public function createHoraire($res, $start_date_load, $end_date_load, $date_semaine_actu = null, $date_fin_actu = null, $request, $times_creneaux, $horraire_tab, $admin, $horaire, $maximum_number_place, $maximum_number_place_by_reservation)
     {
+        $conf = $this->getModuleConfig('fullcalendar');
         if ($res['to_add'] == - 1) {
             $color = 'red';
         } else {
@@ -383,125 +384,78 @@ SQL;
             $actual_day = $date_semaine_actu;
             $end_date = $date_fin_actu;
         }
-        if (!($request->AJAX)) {
-            while ($actual_day <= $end_date && $actual_day < $end_date_load) {
-                list($annee, $mois, $jour) = explode('-', $actual_day);
-                $full_week_horaire = (object)array(
-                    'start' => $actual_day . 'T' . $res['start_hour'],
-                    'end' => $actual_day . 'T' . $res['end_hour'],
-                    'rendering' => 'background',
-                    'color' => $color,
-                    'title' => $res['comment'],
-                    'time_creneaux' => $times_creneaux,
-                    'maximum_number_place' => $maximum_number_place,
-                    'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                );
-                if ($admin && $horaire == "true") {
-                    $affichage = (object)array(
-                        'start' => $actual_day . 'T' . $res['start_hour'],
-                        'end' => $actual_day . 'T' . $res['end_hour'],
-                        'backgroundColor' => 'transparent',
-                        'title' => $res['comment'],
-                        'url' => __WWW__ . '/horaire/update?clementine_reservation_horaire-id=' . $res['id'],
-                        'time_creneaux' => $times_creneaux,
-                        'maximum_number_place' => $maximum_number_place,
-                        'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                    );
-                    array_push($horraire_tab, $affichage);
-                } else {
-                    if (!empty($res['comment']) || $res['to_add'] == - 1) {
-                        if ($admin) {
-                            $affichage = (object)array(
-                                'start' => $actual_day . 'T' . $res['start_hour'],
-                                'end' => $actual_day . 'T' . $res['end_hour'],
-                                'backgroundColor' => 'transparent',
-                                'title' => $res['comment'],
-                                'url' => __WWW__ . '/horaire/update?clementine_reservation_horaire-id=' . $res['id'],
-                                'time_creneaux' => $times_creneaux,
-                                'maximum_number_place' => $maximum_number_place,
-                                'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                            );
-                        } else {
-                            $affichage = (object)array(
-                                'start' => $actual_day . 'T' . $res['start_hour'],
-                                'end' => $actual_day . 'T' . $res['end_hour'],
-                                'backgroundColor' => 'transparent',
-                                'title' => $res['comment'],
-                                'time_creneaux' => $times_creneaux,
-                                'maximum_number_place' => $maximum_number_place,
-                                'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                            );
-                        }
-                        array_push($horraire_tab, $affichage);
-                    }
-                }
-                array_push($horraire_tab, $full_week_horaire);
-                $actual_day = date("Y-m-d", mktime(0, 0, 0, $mois, $jour + 1, $annee));
-            }
-        } else {
+        if ($request->AJAX) {
             while ($actual_day < $start_date_load) {
                 list($annee, $mois, $jour) = explode('-', $actual_day);
                 $actual_day = date("Y-m-d", mktime(0, 0, 0, $mois, $jour + 1, $annee));
             }
-
-            while ($actual_day >= $start_date_load && $actual_day <= $end_date && $actual_day < $end_date_load) {
-                list($annee, $mois, $jour) = explode('-', $actual_day);
-                $full_week_horaire = (object)array(
+        }
+        while ($this->_testActualDay($actual_day, $end_date, $end_date_load, $request->AJAX)) {
+            list($annee, $mois, $jour) = explode('-', $actual_day);
+            $full_week_horaire = (object)array(
+                'start' => $actual_day . 'T' . $res['start_hour'],
+                'end' => $actual_day . 'T' . $res['end_hour'],
+                'rendering' => 'background',
+                'color' => $color,
+                'title' => $res['comment'],
+                'time_creneaux' => $times_creneaux,
+                'maximum_number_place' => $maximum_number_place,
+                'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
+            );
+            if ($admin && $horaire == "true") {
+                $affichage = (object)array(
                     'start' => $actual_day . 'T' . $res['start_hour'],
                     'end' => $actual_day . 'T' . $res['end_hour'],
-                    'rendering' => 'background',
-                    'color' => $color,
+                    'backgroundColor' => $conf['horaire'],
                     'title' => $res['comment'],
+                    'url' => __WWW__ . '/horaire/update?clementine_reservation_horaire-id=' . $res['id'],
                     'time_creneaux' => $times_creneaux,
                     'maximum_number_place' => $maximum_number_place,
                     'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
                 );
-                if ($admin && $horaire == "true") {
-                    $affichage = (object)array(
-                        'start' => $actual_day . 'T' . $res['start_hour'],
-                        'end' => $actual_day . 'T' . $res['end_hour'],
-                        'backgroundColor' => 'transparent',
-                        'title' => $res['comment'],
-                        'url' => __WWW__ . '/horaire/update?clementine_reservation_horaire-id=' . $res['id'],
-                        'time_creneaux' => $times_creneaux,
-                        'maximum_number_place' => $maximum_number_place,
-                        'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                    );
-                    array_push($horraire_tab, $affichage);
-                } else {
-                    if (!empty($res['comment']) || $res['to_add'] == - 1) {
-                        if ($admin) {
-                            $affichage = (object)array(
-                                'start' => $actual_day . 'T' . $res['start_hour'],
-                                'end' => $actual_day . 'T' . $res['end_hour'],
-                                'backgroundColor' => 'transparent',
-                                'title' => $res['comment'],
-                                'url' => __WWW__ . '/horaire/update?clementine_reservation_horaire-id=' . $res['id'],
-                                'time_creneaux' => $times_creneaux,
-                                'maximum_number_place' => $maximum_number_place,
-                                'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                            );
-                        } else {
-                            $affichage = (object)array(
-                                'start' => $actual_day . 'T' . $res['start_hour'],
-                                'end' => $actual_day . 'T' . $res['end_hour'],
-                                'backgroundColor' => 'transparent',
-                                'title' => $res['comment'],
-                                'time_creneaux' => $times_creneaux,
-                                'maximum_number_place' => $maximum_number_place,
-                                'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
-                            );
-                        }
-                        array_push($horraire_tab, $affichage);
+                array_push($horraire_tab, $affichage);
+            } else {
+                if (!empty($res['comment']) || $res['to_add'] == - 1) {
+                    if ($admin) {
+                        $affichage = (object)array(
+                            'start' => $actual_day . 'T' . $res['start_hour'],
+                            'end' => $actual_day . 'T' . $res['end_hour'],
+                            'backgroundColor' => 'transparent',
+                            'title' => $res['comment'],
+                            'url' => __WWW__ . '/horaire/update?clementine_reservation_horaire-id=' . $res['id'],
+                            'time_creneaux' => $times_creneaux,
+                            'maximum_number_place' => $maximum_number_place,
+                            'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
+                        );
+                    } else {
+                        $affichage = (object)array(
+                            'start' => $actual_day . 'T' . $res['start_hour'],
+                            'end' => $actual_day . 'T' . $res['end_hour'],
+                            'backgroundColor' => 'transparent',
+                            'title' => $res['comment'],
+                            'time_creneaux' => $times_creneaux,
+                            'maximum_number_place' => $maximum_number_place,
+                            'maximum_number_place_by_reservation' => $maximum_number_place_by_reservation
+                        );
                     }
+                    array_push($horraire_tab, $affichage);
                 }
-                array_push($horraire_tab, $full_week_horaire);
-                $actual_day = date("Y-m-d", mktime(0, 0, 0, $mois, $jour + 1, $annee));
             }
+            array_push($horraire_tab, $full_week_horaire);
+            $actual_day = date("Y-m-d", mktime(0, 0, 0, $mois, $jour + 1, $annee));
         }
         return $horraire_tab;
-
     }
+
+    public function _testActualDay($actual_day, $end_date, $end_date_load, $is_ajax)
+    {
+        if (!$is_ajax) {
+            return ($actual_day <= $end_date && $actual_day < $end_date_load);
+        } else {
+            return ($actual_day >= $start_date_load && $actual_day <= $end_date && $actual_day < $end_date_load);
+        }
+    }
+
     /**
      *  repeat_all_day : Créer en boucle les horaires répétés pour des horaires répété tous les jours.
      *
@@ -534,6 +488,7 @@ SQL;
         }
         return $horraire_tab;
     }
+
     /**
      *  repeat_all_month : Créer en boucle les horaires répétés pour des horaires répété tous les mois.
      *

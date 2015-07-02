@@ -54,7 +54,7 @@ $end_date = date($day . ' ' . $end_date);
 $start_date = date($day . ' ' . $hour);
 $nb_place_prise = $reservation_mdl->getNbPlacePrise($start_date, $end_date, $id_ressource);
 $nb_place_restante = $nb_place_max - $nb_place_prise;
-$lang = Clementine::$config['module_fullcalendar']['lang'];
+$lang = Clementine::$config['module_reservation']['lang'];
 ?>
 <script type="text/javascript">
     jQuery(document).ready(function() { 

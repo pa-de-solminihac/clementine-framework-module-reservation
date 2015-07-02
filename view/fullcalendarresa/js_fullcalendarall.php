@@ -2,8 +2,8 @@
 // Déclaration des variables utile à la création d'un calendrier
 $ressource = $data['timeline_ressource'];
 $ressource_name = 'Ressources';
-if (!empty(Clementine::$config['module_fullcalendar']['ressource'])) {
-    $ressource_name = Clementine::$config['module_fullcalendar']['ressource'];
+if (!empty(Clementine::$config['module_reservation']['ressource'])) {
+    $ressource_name = Clementine::$config['module_reservation']['ressource'];
 }
 $creneaux = '00:30:00';
 $user_mdl = $this->getModel('users');
@@ -434,10 +434,6 @@ function secToTime(secs)  {
 #list_form, .fc-timelineDay-button, .fc-timelineThreeDays-button {
     border-radius : 5px !important;
     height: 30px !important;
-}
-#calendar {
-    margin-left : -28px !important;
-    margin-right : -23px !important;
 }
 input[type="date"]::-webkit-clear-button {
     display: none;
