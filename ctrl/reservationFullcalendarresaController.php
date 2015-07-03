@@ -213,7 +213,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                                     array_push($tab_disponibilite, $disponibilite);
                                 }
                             } else {
-                                $res_if_orange_inf_1 = $this->ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp,$l,$connecte,$name);
+                                $res_if_orange_inf_1 = $this->ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$nb_place_max_tmp,$l,$connecte,$name);
                                 $tab_disponibilite = $res_if_orange_inf_1['tab_disponibilite'] ;
                                 $continue = $res_if_orange_inf_1['continue'] ;
                                 $nbPlaceMax = $res_if_orange_inf_1['nbPlaceMax'];
@@ -636,7 +636,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $resultat;
     }
 
-    public function ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp,$l,$connecte,$name)
+    public function ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo, $nb_place_max_tmp,$l,$connecte,$name)
     {
         $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation0']);
         if (empty($title) || $title == " ") {
