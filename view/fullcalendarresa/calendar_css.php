@@ -23,8 +23,8 @@ input[type="date"]::-webkit-clear-button {
 }
 
 .fc-content > .fc-title {
-    position: absolute !important ; 
-    top: 10px !important; 
+    position: absolute !important ;
+    top: 10px !important;
     left: 10px !important
 }
 
@@ -197,7 +197,7 @@ h1 {
     }
 }
 .fc-time-grid-event{
-    height:auto;
+    height: auto;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <?php
+$this->getBlock('fullcalendarresa/calendar_css', $data);
 // Initialisation de toutes les variables déstinés à être utilisés dans le calendrier
 $data['info_taille'] = '00:10:00';
-$this->getBlock('fullcalendarresa/calendar_css', $data);
 $user_mdl = $this->getModel('users');
 $ressource_mdl = $this->getModel('ressource');
 $nbPlaceMax = $ressource_mdl->getMaximumNumberPlace($data['id_ressource']);
@@ -42,8 +42,6 @@ $info_taille = '00:10:00';
 if (isset($request->GET['time'])) {
     $info_taille = $request->get('string', 'time');
 }
-$sec = $helper->timeToSecond($info_taille);
-$pix = (3600 / $sec) * 20;
 ?>
 <script type="text/javascript">
 if(window.location.hash) {
@@ -70,7 +68,6 @@ if(window.location.hash) {
 var auth = <?php echo json_encode($auth); ?>;
 var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
     jQuery(document).ready(function() {
-        var pix = <?php echo json_encode($pix); ?>;
         var nbPlaceMax = <?php echo json_encode($nbPlaceMax); ?> ;
         var under_file = <?php echo json_encode($under_file); ?>;
         var lang = <?php echo json_encode($lang); ?>;
@@ -334,10 +331,6 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             eventAfterRender: function(event, element, view) {
                 // jQuery('a[style="background-color:transparent;border-color:transparent;color:#000"]').remove();
                 // jQuery('.fc-bg:empty').height(40);
-                if (view.name == 'month') {
-                    jQuery('thead tr').css('height','1em');
-                    jQuery('tbody tr').css('height','1em');
-                }
                 // jQuery('.full').mouseover(function() {
                 // var date = event.start;
                 // var _this = this;
@@ -405,8 +398,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             displayEventEnd : true,
             snapDuration : <?php echo json_encode($creneaux); ?>,
             eventAfterAllRender: function(view) {
-                pix = pix / jQuery('.fc-event-container > a').length * 30;
-                jQuery(".fc-time-grid-event .fc-v-event .fc-event .fc-start .fc-end dispo").css("height", pix);
+                jQuery('thead tr').css('height','1em');
                 current_Date = $('#calendar' + id_ressource).fullCalendar('getDate');
                 current_Date = current_Date.format('YYYY-MM-DD');
                 if (jQuery("#dtp").length) {
@@ -654,5 +646,3 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
     });
 </script>
 <!-- <img src='../loader2.gif' class='reservation_calendar_loading' style='z-index:9; position:fixed; top:50% ; left:50% '   alt='loading' height='30' width='200' > -->
-<div class="popover">
-</div>

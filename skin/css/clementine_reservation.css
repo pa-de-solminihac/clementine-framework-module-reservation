@@ -26,7 +26,8 @@
 }
 #videoModal {
     overflow: hidden;
-}   
+    padding: 0 !important;
+}
 
 .is-an-iframe btn {
     top: -5px;
@@ -61,7 +62,7 @@ input[name=select_week7] {
 }
 
 .dispo .fc-content, .full .fc-content, .list .fc-content {
-    color: white; 
+    color: white;
 }
 
 .fc-time {
@@ -99,7 +100,7 @@ input[name=select_week7] {
 #menu_calendar {
     margin-bottom: 5px;
     overflow: hidden;
-} 
+}
 
 body .fc-event .fc-bg {
     opacity: 0;
@@ -129,20 +130,46 @@ body .fc-event .fc-bg {
     border-color: #DDD;
 }
 
-.reservation_calendar_container .fc-content-skeleton tbody td {
-}
 
+/*.reservation_calendar_container .fc-event:hover,*/
+/*.reservation_calendar_container .fc-timeline-event:hover,*/
+.reservation_calendar_container .fc-timeline-event:focus,
 .reservation_calendar_container .fc-event:focus {
+    background-color: #000 !important;
     text-decoration: none;
 }
 
-/*.fc-toolbar {*/
-    /*overflow: hidden;*/
+/*.reservation_calendar_container .fc-event:hover .fc-content,*/
+.reservation_calendar_container .fc-timeline-event:focus .fc-content,
+.reservation_calendar_container .fc-event:focus .fc-content {
+    color: #FFF !important;
+}
+
+.reservation_calendar_container a.fc-more {
+    display: block;
+    height: 100% !important;
+}
+
+/*.reservation_calendar_container .fc-content-skeleton {*/
+    /*height: 100%;*/
 /*}*/
 
-/*.fc-toolbar .fc-right {*/
+/*.reservation_calendar_container .fc-content-skeleton td {*/
+    /*position: relative;*/
+/*}*/
+
+/*.reservation_calendar_container .fc-time-grid .fc-event,*/
+/*.reservation_calendar_container .fc-time-grid .fc-bgevent {*/
     /*position: absolute;*/
-    /*right: 0;*/
+    /*height: auto !important;*/
+/*}*/
+
+/*.reservation_calendar_container .fc-content-skeleton .fc-event-container > a.fc-event,*/
+/*.reservation_calendar_container .fc-more-popover .fc-event-container > a.fc-event {*/
+    /*display: block;*/
+    /*box-sizing: border-box;*/
+    /*margin-top: 0;*/
+    /*margin-bottom: 1px;*/
 /*}*/
 
 .reservation_datetimepicker {
@@ -177,33 +204,21 @@ body .fc-event .fc-bg {
 
 @media screen and (max-width: 1040px) {
     .legende {
-        width: 100px;
+        width: 60px;
     }
-    #number_people {
-        position: absolute;
-        top: 40px;
-    }
-} 
+}
 
 @media screen and (max-width: 500px) {
-    .legende .fc-time {
-        display: none !important;
-    }
     .legende .fc-title {
         top: 0 !important;
     }
     .legende {
-        height: 20px !important;
-        width: 60px; 
-    }
-    #number_people_unco {
-        position: absolute;
-        top: 60px;
+        width: 60px;
     }
     .titre_page {
         margin-left: 0 !important;
     }
-} 
+}
 
 @media screen and (max-width: 440px) {
     .fc-center {

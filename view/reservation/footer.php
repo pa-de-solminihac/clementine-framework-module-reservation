@@ -10,9 +10,6 @@ if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections
         $this->getBlock('design/footer', $data, $request);
     }
 }
-
-
-
 // Envoie de mail si on le désire
 if (Clementine::$config['mail']['send'] == 1 && $request->ACT == 'update' && $request->CTRL == 'reservation' && !isset($data['send'])) {
 ?>

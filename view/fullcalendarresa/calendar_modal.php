@@ -1,4 +1,5 @@
 <!-- Création de la modal et code associé -->
+<div class="popover"></div>
 <div href="#" id="Modal" data-toggle="modal" data-target="#videoModal"></div>
 <?php
 $ressource_id = $request->get('int', 'clementine_reservation_ressource-id');
