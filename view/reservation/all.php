@@ -22,11 +22,22 @@ if (!$request->AJAX && empty($data['is_iframe']) && empty($data['hidden_sections
 <?php
     $cssjs->register_foot('fullcalendarresa/js_fullcalendarall', $this->getBlockHtml('fullcalendarresa/js_fullcalendarall', $data, $request));
     $this->getBlock('fullcalendarresa/calendar_modal');
-?>   
+?>
     <div id="calendar" class="reservation_calendar_container">
         <div class='reservation_calendar_loading'></div>
     <div>
 <?php
+    if ($id_ressource = $request->get('int', 'clementine_reservation_ressource-id')) {
+?>
+    <a href="<?php echo __WWW__ . '/reservation/calendar?clementine_reservation_ressource-id=' . $id_ressource; ?>"
+       class="clementine_crud-backbutton
+              clementine_crud-update-backbutton backbutton
+              btn btn-lg btn-default btn-raised btn-white
+              pull-left btn-fab">
+        <i class="glyphicon glyphicon-arrow-left"></i><span class="text-hide">Retour</span>
+    </a>
+<?php
+    }
     $this->getBlock('reservation/footer_content', $data, $request);
     $this->getBlock('reservation/footer', $data, $request);
 } else {

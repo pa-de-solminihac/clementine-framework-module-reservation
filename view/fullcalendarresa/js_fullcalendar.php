@@ -226,7 +226,7 @@ var id_ressource = <?php echo json_encode($data['id_ressource']); ?>;
             eventDurationEditable : false,
             viewRender : function (view, element) {
                 jQuery('.fc-left').empty();
-                jQuery('.fc-left').append("<button id='all_form' class='fc-button fc-state-default' onclick='location.href=\""+code+"/reservation/all\"'>Tous </button>");
+                jQuery('.fc-left').append("<button id='all_form' class='fc-button fc-state-default' onclick='location.href=\""+code+"/reservation/all?clementine_reservation_ressource-id=" + id_ressource  + "\"'>Tous </button>");
                 if (co) {
                     jQuery('.fc-left').append("<button id='list_form' class='fc-button fc-state-default' onclick='location.href=\""+code+"/reservation?clementine_reservation_ressource-id=" + id_ressource + "\"'>Liste </button>");
                 } else if (auth && !co) {
