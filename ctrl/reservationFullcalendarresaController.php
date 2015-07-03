@@ -111,7 +111,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $url = "";
         $user = $this->getModel('users');
         $auth = $user->getAuth();
-
         $plein = true;
         $url_pass = false;
         if (Clementine::$config['module_reservation']['force'] == 0) {
@@ -158,16 +157,15 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                             }
                             $url_update = $reservation_mdl->getUrlUpdateByHour($horraire_dispo[$i] . ' ' . $start, $horraire_dispo[$i] . ' ' . $end, $id_ressource);
                             if ($orange_tab[$horraire_dispo[$i] . ' ' . $start . '-' . $horraire_dispo[$i] . ' ' . $end] >= 1) {
-                            
                                 if ($orange_tab[$horraire_dispo[$i] . ' ' . $start . '-' . $horraire_dispo[$i] . ' ' . $end] <= $number_max_print_col) {
                                     $number_create = $orange_tab[$horraire_dispo[$i] . ' ' . $start . '-' . $horraire_dispo[$i] . ' ' . $end];
                                     for ($l = 0; $l < $number_create; ++$l) {
-                                        $tab_disponibilite = $this->createNumberCreateOrange($l,$url_update,$reservation_mdl,$connecte,$name,$horraire_dispo,$i,$start,$end,$time_creneaux,$tab_disponibilite);
+                                        $tab_disponibilite = $this->createNumberCreateOrange($l, $url_update, $reservation_mdl, $connecte, $name, $horraire_dispo, $i, $start, $end, $time_creneaux, $tab_disponibilite);
                                     }
                                     if (!empty($nb_place_max_horaire)) {
-                                        $res_non_autorise = $this->createNonAutorise($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,$tab_disponibilite);
-                                        $tab_disponibilite = $res_non_autorise['tab_disponibilite'] ;
-                                        $continue = $res_non_autorise['continue'] ;
+                                        $res_non_autorise = $this->createNonAutorise($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, $tab_disponibilite);
+                                        $tab_disponibilite = $res_non_autorise['tab_disponibilite'];
+                                        $continue = $res_non_autorise['continue'];
                                         $nbPlaceMax = $res_non_autorise['nbPlaceMax'];
                                     }
                                     if ($continue) {
@@ -182,7 +180,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                                         );
                                         array_push($tab_disponibilite, $disponibilite);
                                     } else {
-
                                         $disponibilite = (object)array(
                                             'start' => $horraire_dispo[$i] . 'T' . $start,
                                             'end' => $horraire_dispo[$i] . 'T' . $end,
@@ -213,30 +210,29 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                                     array_push($tab_disponibilite, $disponibilite);
                                 }
                             } else {
-                                $res_if_orange_inf_1 = $this->ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$nb_place_max_tmp,$l,$connecte,$name);
-                                $tab_disponibilite = $res_if_orange_inf_1['tab_disponibilite'] ;
-                                $continue = $res_if_orange_inf_1['continue'] ;
+                                $res_if_orange_inf_1 = $this->ifOrangeTabInf1($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, $tab_disponibilite, $reservation_mdl, $id_ressource, $url_update, $title_dispo, $nb_place_max_tmp, $l, $connecte, $name);
+                                $tab_disponibilite = $res_if_orange_inf_1['tab_disponibilite'];
+                                $continue = $res_if_orange_inf_1['continue'];
                                 $nbPlaceMax = $res_if_orange_inf_1['nbPlaceMax'];
                             }
                         } else {
-                            $res_non_connecte = $this->ifNonConnecte($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,$tab_disponibilite,$reservation_mdl,$id_ressource,$title_dispo, $url,$nb_place_max_tmp);
-                            $tab_disponibilite = $res_non_connecte['tab_disponibilite'] ;
-                            $continue = $res_non_connecte['continue'] ;
+                            $res_non_connecte = $this->ifNonConnecte($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, $tab_disponibilite, $reservation_mdl, $id_ressource, $title_dispo, $url, $nb_place_max_tmp);
+                            $tab_disponibilite = $res_non_connecte['tab_disponibilite'];
+                            $continue = $res_non_connecte['continue'];
                             $nbPlaceMax = $res_non_connecte['nbPlaceMax'];
                         }
                     } else {
                         $res_non_tab_orange = array();
                         $continue = false;
-                        $res_non_tab_orange = $this->ifNonTabOrange($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,$tab_disponibilite,$title_dispo,$nb_place_max_tmp,$url);
-                        $tab_disponibilite = $res_non_tab_orange['tab_disponibilite'] ;
-                        $continue = $res_non_tab_orange['continue'] ;
+                        $res_non_tab_orange = $this->ifNonTabOrange($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, $tab_disponibilite, $title_dispo, $nb_place_max_tmp, $url);
+                        $tab_disponibilite = $res_non_tab_orange['tab_disponibilite'];
+                        $continue = $res_non_tab_orange['continue'];
                         $nbPlaceMax = $res_non_tab_orange['nbPlaceMax'];
                     }
                 }
             }
         }
         return $this->calendarPlusResa($list_creneaux, $horraire_dispo, $reservation_mdl, $id_ressource, $admin, $under_file, $orange_tab, $tab_disponibilite, $full, $edit, $number_max_print_col, $lang, $connecte, $name, $tab_url_resa);
-
     }
 
     /**
@@ -355,7 +351,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                                 array_push($excep, $complet);
                             }
                         }
-
                     } else {
                         if ($lang == 'fr') {
                             $title = 'Complet';
@@ -461,9 +456,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                 'title' => $title_ressource,
             );
             array_push($tab_ressource, $ressource_object);
-
             $taille_evt = count($matrice[$i][4]);
-
             for ($j = 0; $j < $taille_evt; ++$j) {
                 $array_res = array();
                 $resourceId = 'resourceId';
@@ -473,19 +466,15 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                     $result->$k = $v;
                 }
                 $result->$resourceId = $id_ressource;
-
                 array_push($tab_resa, $result);
             }
-
         }
         $tab_resultat['ressource'] = $tab_ressource;
         $tab_resultat['resa'] = $tab_resa;
-
         return $tab_resultat;
-
     }
 
-    public function createNumberCreateOrange($l,$url_update,$reservation_mdl,$connecte,$name,$horraire_dispo,$i,$start,$end,$time_creneaux,&$tab_disponibilite)
+    public function createNumberCreateOrange($l, $url_update, $reservation_mdl, $connecte, $name, $horraire_dispo, $i, $start, $end, $time_creneaux, &$tab_disponibilite)
     {
         $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation' . $l]);
         if (empty($title) || $title == " ") {
@@ -520,7 +509,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $tab_disponibilite;
     }
 
-    public function createNonAutorise($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite)
+    public function createNonAutorise($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, &$tab_disponibilite)
     {
         foreach ($nb_place_max_horaire as $key => $value) {
             if (($horraire_dispo[$i] > $value['start_date'] && $horraire_dispo[$i] < $value['end_date']) || ($horraire_dispo[$i] == $value['start_date'] && $start >= $value['start_hour']) || ($horraire_dispo[$i] == $value['end_date'] && $end <= $value['end_hour'])) {
@@ -559,9 +548,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $resultat;
     }
 
-    public function createIfAdmin($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo, $nb_place_max_tmp)
+    public function createIfAdmin($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, &$tab_disponibilite, $reservation_mdl, $id_ressource, $url_update, $title_dispo, $nb_place_max_tmp)
     {
-         $disponibilite = (object)array(
+        $disponibilite = (object)array(
             'start' => $horraire_dispo[$i] . 'T' . $start,
             'end' => $horraire_dispo[$i] . 'T' . $end,
             'title' => '...',
@@ -636,7 +625,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $resultat;
     }
 
-    public function ifOrangeTabInf1($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo, $nb_place_max_tmp,$l,$connecte,$name)
+    public function ifOrangeTabInf1($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, &$tab_disponibilite, $reservation_mdl, $id_ressource, $url_update, $title_dispo, $nb_place_max_tmp, $l, $connecte, $name)
     {
         $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation0']);
         if (empty($title) || $title == " ") {
@@ -655,7 +644,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                     'time_creneaux' => $time_creneaux,
                 );
                 array_push($tab_disponibilite, $disponibilite);
-
             }
         } else {
             $disponibilite = (object)array(
@@ -669,7 +657,6 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
             );
             array_push($tab_disponibilite, $disponibilite);
         }
-
         $continue = false;
         if (!empty($nb_place_max_horaire)) {
             foreach ($nb_place_max_horaire as $key => $value) {
@@ -733,10 +720,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $resultat['continue'] = $continue;
         $resultat['nbPlaceMax'] = $nbPlaceMax;
         return $resultat;
-
     }
 
-    public function ifNonConnecte($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$title_dispo,$url,$nb_place_max_tmp)
+    public function ifNonConnecte($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, &$tab_disponibilite, $reservation_mdl, $id_ressource, $title_dispo, $url, $nb_place_max_tmp)
     {
         $continue = false;
         if (!empty($nb_place_max_horaire)) {
@@ -887,10 +873,9 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         $resultat['continue'] = $continue;
         $resultat['nbPlaceMax'] = $nbPlaceMax;
         return $resultat;
-
     }
 
-    public function ifNonTabOrange($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$title_dispo,$nb_place_max_tmp,$url)
+    public function ifNonTabOrange($nb_place_max_horaire, $horraire_dispo, $i, $start, $end, $nb_recherche, $title_non_autoriser, $time_creneaux, $continue, $nbPlaceMax, $nb_place_max_reservation, &$tab_disponibilite, $title_dispo, $nb_place_max_tmp, $url)
     {
         $continue = false;
         if (!empty($nb_place_max_horaire)) {
