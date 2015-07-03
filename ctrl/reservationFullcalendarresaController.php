@@ -559,7 +559,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
         return $resultat;
     }
 
-    public function createIfAdmin($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo,$color,$nb_place_max_tmp)
+    public function createIfAdmin($nb_place_max_horaire,$horraire_dispo,$i,$start,$end,$nb_recherche,$title_non_autoriser,$time_creneaux,$continue,$nbPlaceMax,$nb_place_max_reservation,&$tab_disponibilite,$reservation_mdl,$id_ressource,$url_update,$title_dispo, $nb_place_max_tmp)
     {
          $disponibilite = (object)array(
             'start' => $horraire_dispo[$i] . 'T' . $start,
