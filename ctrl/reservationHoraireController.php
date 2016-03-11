@@ -671,7 +671,7 @@ SQL;
                 foreach ($tab_horaire_crea_deb as $tab_deb_crea) {
                     $date_deb_crea = $tab_deb_crea;
                     $date_fin_crea = $tab_horaire_crea_fin[$ind_crea];
-                    if ($date_fin_actu >= $date_deb_crea && $date_deb_crea >= $date_deb_actu || $date_fin_actu >= $date_fin_crea && $date_fin_crea >= $date_deb_actu) {
+                    if ((($date_fin_actu >= $date_deb_crea && $date_deb_crea >= $date_deb_actu) || ($date_fin_actu >= $date_fin_crea && $date_fin_crea >= $date_deb_actu)) && $insecure_values['clementine_reservation_horaire-to_add'] != '-1') {
                         $existe = 1;
                     }
                     ++$ind_crea;

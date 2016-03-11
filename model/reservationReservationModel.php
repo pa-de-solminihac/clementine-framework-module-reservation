@@ -349,7 +349,11 @@ SQL;
 SQL;
         $stmt = $db->query($sql);
         $fetch_all = $db->fetch_all($stmt);
-        return $fetch_all[0][0];
+        if (isset($fetch_all[0][0])) {
+            return $fetch_all[0][0];
+        } else {
+            return 0;
+        }
     }
 
     public function getMaxId()

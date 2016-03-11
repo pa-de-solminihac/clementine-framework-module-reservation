@@ -322,7 +322,7 @@ class reservationFullcalendarresaController extends reservationFullcalendarresaC
                         } else {
                             $title = $reservation_mdl->getNameByIdResa($url_update['id_reservation0']);
                             if (empty($title) || $title == " ") {
-                                $usr = $user->getUser($reservation_mdl->getIdClemByIdResa($url_update['id_reservation' . $l]));
+                                $usr = $user->getUser($reservation_mdl->getIdClemByIdResa($url_update['id_reservation0']));
                                 $title = $usr[Clementine::$config['module_reservation']['getuser_lastname']] . ' ' . $usr[Clementine::$config['module_reservation']['getuser_firstname']];
                             }
                             if ($connecte) {

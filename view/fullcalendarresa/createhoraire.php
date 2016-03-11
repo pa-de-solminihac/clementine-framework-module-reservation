@@ -2,14 +2,12 @@
     jQuery(document).ready(function() { 
         var repeat_all_html = "<div id='repeat_all' class='repeat'>Repeter tous les : <select name='select_value'><option value='0'>...</option><option value='1'>Jour</option><option value='2'>Semaine</option><option value='3'>Mois</option></select></div>";    
         jQuery('#clementine_reservation_horaire-option').after(repeat_all_html);
-        jQuery('#repeat_all').hide();
         var html_week ='<div id="check_week" class="repeat"><input type="checkbox" class="week_radio" name="select_week1" value="Monday">Lundi </input><input type="checkbox" class="week_radio" name="select_week2" value="Tuesday">Mardi </input><input type="checkbox" class="week_radio" name="select_week3" value="Wednesday">Mercredi </input><input type="checkbox" class="week_radio" name="select_week4" value="Thursday">Jeudi </input><input type="checkbox" class="week_radio" name="select_week5" value="Friday">Vendredi </input><input type="checkbox" class="week_radio" name="select_week6" value="Saturday">Samedi </input><input type="checkbox" class="week_radio" name="select_week7" value="Sunday">Dimanche </input> Toutes les <input id="nb_fois" name="nb_fois" type="number" style="width:40px;" />  semaines</div>';      
-        var htm_till = '<hr style="display: none;" /><div id="div_till" class="repeat"> Jusqu\'à :  <input type="date" name="till" id="till"></input></div>';
+        var htm_till = '<hr /><div id="div_till" class="repeat"> Jusqu\'à :  <input placeholder="AAAA-MM-JJ" type="text" id="till" name="till" /></div>';
         
         jQuery('#repeat_all').after(html_week);
         jQuery('#check_week').hide();
         jQuery('#check_week').after(htm_till);
-        jQuery('#div_till').hide();
         jQuery('#clementine_reservation_horaire-start_date').change( function() {
             var newValue = jQuery(this).val();
             var value = newValue.split('-');
