@@ -785,7 +785,7 @@ SQL;
             $end_date_load_sec = strtotime($end_date_load);
             if (date_timestamp_get($jour_recherche) < $end_date_load_sec) {
 
-                for ($m = 0; $m < 10; ++$m) {
+                for ($m = 0; $m < 20; ++$m) {
                     if (date_timestamp_get($jour_recherche) >= $end_date_load_sec) {
                         break;
                     } else {

@@ -54,15 +54,16 @@ SQL;
     public function getMaxIdHoraire()
     {
         $db = $this->getModel('db');
+        $bdd = Clementine::$config['clementine_db']['name'];
         $sql = <<<SQL
     SELECT `AUTO_INCREMENT`
     FROM  INFORMATION_SCHEMA.TABLES
-    WHERE TABLE_SCHEMA = 'quai13'
+    WHERE TABLE_SCHEMA = "$bdd"
     AND   TABLE_NAME   = 'clementine_reservation_horaire';
 SQL;
         $stmt = $db->query($sql);
         $res = $db->fetch_assoc($stmt);
-        return $res['AUTO_INCREMENT'];
+        return $res['AUTO_INCREMENT'] - 1;
     }
     /**
      *  getMaxHoraire : Renvoie l'horaire maximum pour une ressource donnée pour pouvoir tronqué le calendrier
