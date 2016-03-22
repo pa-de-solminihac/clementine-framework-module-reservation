@@ -309,7 +309,7 @@ SQL;
                         if ($elem_list_tab == $start_hour_time) {
                             array_push($tab_already_done, $res['start_date']);
                             $number_place_already_took = $reservation_mdl->getNbPlacePrise($res['start_date'], $res['end_date'], $id_ressource);
-                            if ($number_place_already_took == $maximum_number_place) {
+                            if ($number_place_already_took >= $maximum_number_place) {
                                 for ($k = 0; $k < $number_reservation; ++$k) {
                                     unset($plage_horraire[$i + 1][$j + $k]);
                                 }
